@@ -4,6 +4,7 @@ const path = require("path");
 const webpack = require("webpack");
 
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { WebpackPluginServe } = require("webpack-plugin-serve");
@@ -71,6 +72,7 @@ module.exports = {
       },
     }),
     new CopyWebpackPlugin([{ from: "public" }]),
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       inject: true,
       template: "public/index.html",
@@ -84,6 +86,7 @@ module.exports = {
           progress: false,
           port: 3000,
           static: outputPath,
+          historyFallback: true,
         }),
   ].filter((plugin) => plugin),
   watch: !isProduction,
