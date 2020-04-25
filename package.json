@@ -6,8 +6,13 @@
     "build": "NODE_ENV=production webpack --config webpack.config.js",
     "start": "webpack --config webpack.config.js"
   },
+  "resolutions": {
+    "@polkadot/api": "1.9.1",
+    "@polkadot/types": "1.9.1",
+    "@polkadot/ui-keyring": "0.52.1"
+  },
   "dependencies": {
-    "@polkadot/api": "^1.11.2",
+    "@polkadot/api": "1.9.1",
     "@polkadot/api-contract": "^1.9.1",
     "@polkadot/app-contracts": "^0.39.1",
     "@polkadot/app-extrinsics": "^0.39.1",
