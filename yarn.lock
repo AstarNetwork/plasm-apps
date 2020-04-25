@@ -373,6 +373,14 @@
     "@babel/runtime" "^7.8.3"
     "@polkadot/api-contract" "^1.1.0-beta.0"
 
+"@polkadot/app-explorer@^0.39.1":
+  version "0.39.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/app-explorer/-/app-explorer-0.39.1.tgz#a540a6d549cab966824d6d11cb9da1b2c55ab381"
+  integrity sha512-yfCfQhBk0RGI5vk9X7pSUefkNfMj83AMEIOggsEly5d9aoTAbaAT8hsjeCycOLrixTZpb7AOX7uMwCrFi8bc9w==
+  dependencies:
+    "@babel/runtime" "^7.8.3"
+    "@polkadot/react-components" "^0.39.1"
+
 "@polkadot/app-extrinsics@^0.39.1":
   version "0.39.1"
   resolved "https://registry.yarnpkg.com/@polkadot/app-extrinsics/-/app-extrinsics-0.39.1.tgz#2f6a407ade15e69e2aef9add73a041b10b6ecc6c"

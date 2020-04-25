@@ -34,6 +34,10 @@ function SidebarInner(): React.ReactElement {
         L2 Deposit
       </Menu.Item>
       <div className="blank"></div>
+      <Menu.Item as={Link} to="/explorer">
+        <i className="fas fa-database"></i>
+        Explorer
+      </Menu.Item>
       <Menu.Item as={Link} to="/chainstate">
         <i className="fas fa-database"></i>
         Chain State

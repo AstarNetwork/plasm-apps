@@ -10,6 +10,7 @@ import OPContract from "./OPContract/OPContract";
 import Staking from "./Staking/Staking";
 import ChainState from "./ChainState";
 import Extrinsics from "./Extrinsics";
+import Explorer from "./Explorer";
 import Status from "./Status";
 
 function Content({ className }: Props): React.ReactElement {
@@ -29,6 +30,9 @@ function Content({ className }: Props): React.ReactElement {
         </Route>
         <Route path="/l2">
           <L2Deposit />
+        </Route>
+        <Route path="/explorer">
+          <Explorer basePath="/explorer" onStatusChange={queueAction} />
         </Route>
         <Route path="/chainstate">
           <ChainState basePath="/chainstate" onStatusChange={queueAction} />
