@@ -9,6 +9,7 @@ import L2Deposit from "./L2Deposit";
 import OPContract from "./OPContract/OPContract";
 import Staking from "./Staking/Staking";
 import ChainState from "./ChainState";
+import Extrinsics from "./Extrinsics";
 import Status from "./Status";
 
 function Content({ className }: Props): React.ReactElement {
@@ -31,6 +32,9 @@ function Content({ className }: Props): React.ReactElement {
         </Route>
         <Route path="/chainstate">
           <ChainState basePath="/chainstate" onStatusChange={queueAction} />
+        </Route>
+        <Route path="/extrinsics">
+          <Extrinsics basePath="/extrinsics" onStatusChange={queueAction} />
         </Route>
       </Switch>
 

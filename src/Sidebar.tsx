@@ -38,6 +38,10 @@ function SidebarInner(): React.ReactElement {
         <i className="fas fa-database"></i>
         Chain State
       </Menu.Item>
+      <Menu.Item as={Link} to="/extrinsics">
+        <i className="fas fa-database"></i>
+        Extrinsics
+      </Menu.Item>
     </SemanticUISidebar>
   );
 }
