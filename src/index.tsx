@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import { HashRouter } from "react-router-dom";
-import { Api } from "@polkadot/react-api";
 import Queue from "@polkadot/react-components/Status/Queue";
 import { BlockAuthors, Events } from "@polkadot/react-query";
 
@@ -9,8 +8,8 @@ import "semantic-ui-css/semantic.min.css";
 import "./style.css";
 
 import App from "./App";
+import Api from "./Api/Api";
 
-// TODO: separate constants
 const wsEndpoint = "ws://127.0.0.1:9944";
 
 ReactDOM.render(

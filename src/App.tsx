@@ -3,10 +3,13 @@ import { HashRouter as Router } from "react-router-dom";
 import styled from "styled-components";
 import GlobalStyle from "@polkadot/react-components/styles";
 import { useApi, useCall } from "@polkadot/react-hooks";
+import Signer from "@polkadot/react-signer";
 
 import { Props } from "./types";
 import Sidebar from "./Sidebar";
 import Content from "./Content";
+import AccountsOverlay from "./overlays/Accounts";
+import ConnectingOverlay from "./overlays/Connecting";
 
 function App({ className }: Props): React.ReactElement {
   const { api, isApiReady } = useApi();
@@ -26,8 +29,11 @@ function App({ className }: Props): React.ReactElement {
       <Router>
         <div className={className}>
           <Sidebar />
-
-          <Content />
+          <Signer>
+            <Content />
+          </Signer>
+          <ConnectingOverlay />
+          <AccountsOverlay />
         </div>
       </Router>
     </>
