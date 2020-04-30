@@ -83,4 +83,15 @@ export const types = {
   Releases: {
     _enum: ["V1_0_0"],
   },
+
+  BalanceLock: "BalanceLockTo212",
+  DispatchError: "DispatchErrorTo198",
+  DispatchResult: "DispatchResultTo198",
+  DispatchInfo: {
+    weight: "Weight",
+    class: "DispatchClass",
+  },
+  ReferendumInfo: "ReferendumInfoTo239",
+  StakingLedger: "StakingLedgerTo223",
+  Weight: "u32",
 };
