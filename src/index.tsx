@@ -5,7 +5,6 @@ import Queue from "@polkadot/react-components/Status/Queue";
 import { BlockAuthors, Events } from "@polkadot/react-query";
 
 import "semantic-ui-css/semantic.min.css";
-import "./style.css";
 
 import App from "./App";
 import Api from "./Api/Api";
