@@ -5,13 +5,12 @@ const webpack = require("webpack");
 
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { WebpackPluginServe } = require("webpack-plugin-serve");
 
-const isProduction = process.env.ENV === "production";
-const isDevelopment = process.env.ENV === "development";
+const TARGET = process.env.TARGET;
 const ENV = process.env.ENV || "production";
+const isProduction = ENV === "production";
 const outputPath = path.join(__dirname, "build");
 
 module.exports = {
@@ -28,10 +27,7 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: [
-          isProduction ? MiniCssExtractPlugin.loader : require.resolve("style-loader"),
-          require.resolve("css-loader"),
-        ],
+        use: [require.resolve("style-loader"), require.resolve("css-loader")],
       },
       {
         test: /\.(js|ts|tsx)$/,
@@ -73,11 +69,11 @@ module.exports = {
     new webpack.DefinePlugin({
       "process.env": {
         WS_URL: JSON.stringify(
-          isProduction
+          TARGET === "main"
             ? "wss://rpc.plasmnet.io/"
-            : isDevelopment
-            ? "ws://127.0.0.1:9944"
-            : "wss://rpc.testnet.plasmnet.io/"
+            : TARGET === "test"
+            ? "wss://rpc.testnet.plasmnet.io/"
+            : "ws://127.0.0.1:9944"
         ),
       },
     }),

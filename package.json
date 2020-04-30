@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "ENV=production webpack --config webpack.config.js",
-    "dev:start": "ENV=development webpack --config webpack.config.js",
-    "prod:start": "ENV=production webpack --config webpack.config.js",
-    "test:start": "webpack --config webpack.config.js"
+    "dev:build": "TARGET=local ENV=production webpack --config webpack.config.js",
+    "test:build": "TARGET=test ENV=production webpack --config webpack.config.js",
+    "prod:build": "TARGET=main ENV=production webpack --config webpack.config.js",
+    "dev:start": "TARGET=local ENV=development webpack --config webpack.config.js",
+    "test:start": "TARGET=test ENV=development webpack --config webpack.config.js",
+    "prod:start": "TARGET=main ENV=development webpack --config webpack.config.js"
   },
   "resolutions": {
     "@polkadot/ui-keyring": "0.52.1"
