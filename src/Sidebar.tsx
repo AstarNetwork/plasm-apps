@@ -16,10 +16,10 @@ function SidebarInner(): React.ReactElement {
         Accounts
       </Menu.Item>
       <div className="blank"></div>
-      <Menu.Item as={Link} to="/operated-contracts">
+      {/* <Menu.Item as={Link} to="/operated-contracts">
         <i className="fas fa-compress"></i>
         OP Contracts
-      </Menu.Item>
+      </Menu.Item> */}
       <Menu.Item as={Link} to="/staking">
         <i className="fas fa-certificate"></i>
         Staking
