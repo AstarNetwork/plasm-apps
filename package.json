@@ -3,8 +3,10 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "build": "NODE_ENV=production webpack --config webpack.config.js",
-    "start": "webpack --config webpack.config.js"
+    "build": "ENV=production webpack --config webpack.config.js",
+    "dev:start": "ENV=development webpack --config webpack.config.js",
+    "prod:start": "ENV=production webpack --config webpack.config.js",
+    "test:start": "webpack --config webpack.config.js"
   },
   "resolutions": {
     "@polkadot/ui-keyring": "0.52.1"

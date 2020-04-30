@@ -9,8 +9,9 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { WebpackPluginServe } = require("webpack-plugin-serve");
 
-const ENV = process.env.NODE_ENV || "development";
-const isProduction = ENV === "production";
+const isProduction = process.env.ENV === "production";
+const isDevelopment = process.env.ENV === "development";
+const ENV = process.env.ENV || "production";
 const outputPath = path.join(__dirname, "build");
 
 module.exports = {
@@ -71,8 +72,13 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       "process.env": {
-        NODE_ENV: JSON.stringify(ENV),
-        WS_URL: JSON.stringify(isProduction ? "wss://testnet.plasmnet.io/" : "ws://127.0.0.1:9944"),
+        WS_URL: JSON.stringify(
+          isProduction
+            ? "wss://rpc.plasmnet.io/"
+            : isDevelopment
+            ? "ws://127.0.0.1:9944"
+            : "wss://rpc.testnet.plasmnet.io/"
+        ),
       },
     }),
     new CopyWebpackPlugin([{ from: "public" }]),
