@@ -4,12 +4,12 @@ import styled from "styled-components";
 import GlobalStyle from "@polkadot/react-components/styles";
 import { useApi, useCall } from "@polkadot/react-hooks";
 import Signer from "@polkadot/react-signer";
+import { ErrorBoundary } from "@polkadot/react-components";
+import { Dimmer, Loader } from "semantic-ui-react";
 
 import { Props } from "./types";
 import Sidebar from "./Sidebar";
 import Content from "./Content";
-import AccountsOverlay from "./overlays/Accounts";
-import ConnectingOverlay from "./overlays/Connecting";
 
 function App({ className }: Props): React.ReactElement {
   const { api, isApiReady } = useApi();
@@ -28,12 +28,20 @@ function App({ className }: Props): React.ReactElement {
       <GlobalStyle />
       <Router>
         <div className={className}>
-          <Sidebar />
-          <Signer>
-            <Content />
-          </Signer>
-          <ConnectingOverlay />
-          <AccountsOverlay />
+          {isApiReady ? (
+            <>
+              <Sidebar />
+              <Signer>
+                <ErrorBoundary>
+                  <Content />
+                </ErrorBoundary>
+              </Signer>
+            </>
+          ) : (
+            <Dimmer active>
+              <Loader size="small">Connecting to the Plasm Network</Loader>
+            </Dimmer>
+          )}
         </div>
       </Router>
     </>

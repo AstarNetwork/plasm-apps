@@ -1,7 +1,3 @@
-// Copyright 2017-2020 @polkadot/react-api authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
-
 import { ApiState } from "@polkadot/react-api/types";
 
 import React, { useContext, useEffect, useState } from "react";
@@ -23,7 +19,7 @@ import derive from "./derive";
 import ApiContext from "@polkadot/react-api/ApiContext";
 import registry from "@polkadot/react-api/typeRegistry";
 
-import { types } from "../utils/types";
+import { types } from "../plasm";
 
 interface Props {
   children: React.ReactNode;
@@ -124,7 +120,15 @@ export default function Api({ children, url }: Props): React.ReactElement<Props>
     const provider = new WsProvider(url);
     const signer = new ApiSigner(queuePayload, queueSetTxStatus);
 
-    api = new ApiPromise({ provider, registry, signer, typesChain, typesSpec, types: types, derives: derive });
+    api = new ApiPromise({
+      provider,
+      registry,
+      signer,
+      typesChain,
+      typesSpec,
+      types: types,
+      derives: derive,
+    });
 
     api.on("connected", (): void => setIsApiConnected(true));
     api.on("disconnected", (): void => setIsApiConnected(false));

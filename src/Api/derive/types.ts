@@ -1,7 +1,7 @@
 import { AccountId, Nominations, Exposure, RewardDestination, StakingLedger } from "@polkadot/types/interfaces";
 import { Option } from "@polkadot/types";
 
-import { Parameters } from "../../utils";
+import { StakingParameters } from "../../plasm";
 
 export type DeriveOperators = [AccountId[], Option<AccountId>[]];
 export type DerivedStakedOperators = [AccountId[], Exposure[]];
@@ -11,7 +11,7 @@ export interface DerivedDappsStakingQuery {
   nominators?: AccountId[];
   stakers?: Exposure;
   contractId: AccountId;
-  contractParameters: undefined | Parameters;
+  contractParameters: undefined | StakingParameters;
 }
 
 export interface DerivedDappsStakingAccount {

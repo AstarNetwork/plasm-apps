@@ -3,10 +3,10 @@ import Storage from "@polkadot/app-storage";
 
 import { Props } from "./types";
 
-export default function ChainState({ className, basePath, onStatusChange }: Props): React.ReactElement {
+export default function ChainState({ basePath, onStatusChange }: Props): React.ReactElement {
   return (
     <>
-      <Storage basePath={`${basePath}`} className={`${className}`} onStatusChange={onStatusChange} />
+      <Storage basePath={`${basePath}`} onStatusChange={onStatusChange} />
     </>
   );
 }

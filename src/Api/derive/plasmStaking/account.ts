@@ -40,9 +40,9 @@ export function account(api: ApiInterfaceRx): (stashId: Uint8Array | string) => 
   return memo(
     (stashId: Uint8Array | string): Observable<DerivedDappsStakingAccount> =>
       combineLatest([
-        api.query.plasmStaking.bonded<Option<AccountId>>(stashId),
-        api.query.plasmStaking.payee<RewardDestination>(stashId),
-        api.query.plasmStaking.dappsNominations<Option<Nominations>>(stashId),
+        api.query.dappsStaking.bonded<Option<AccountId>>(stashId),
+        api.query.dappsStaking.payee<RewardDestination>(stashId),
+        api.query.dappsStaking.dappsNominations<Option<Nominations>>(stashId),
       ]).pipe(
         switchMap(
           ([controllerId, payee, nominations]): Observable<DerivedDappsStakingAccount> =>
@@ -50,7 +50,7 @@ export function account(api: ApiInterfaceRx): (stashId: Uint8Array | string) => 
               of(controllerId),
               of(payee),
               controllerId.isSome
-                ? api.query.plasmStaking.ledger<Option<StakingLedger>>(controllerId.unwrap())
+                ? api.query.dappsStaking.ledger<Option<StakingLedger>>(controllerId.unwrap())
                 : of(undefined),
               of(nominations),
             ]).pipe(

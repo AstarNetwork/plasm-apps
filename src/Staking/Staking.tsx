@@ -1,99 +1,98 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from "react";
-import { Header } from "semantic-ui-react";
-import styled from "styled-components";
-import { useCall, useAccounts, useApi } from "@polkadot/react-hooks";
-import { Route, Switch } from "react-router";
-import { useLocation } from "react-router-dom";
-import { Tabs } from "@polkadot/react-components";
-import { AccountId } from "@polkadot/types/interfaces";
-import { DeriveHeartbeats, DeriveStakingOverview } from "@polkadot/api-derive/types";
+import { AppProps as Props } from "@polkadot/react-components/types";
+import { Exposure, AccountId } from "@polkadot/types/interfaces";
 
-import { Props } from "../types";
+import React from "react";
+import { useLocation } from "react-router-dom";
+import styled from "styled-components";
+import { Option } from "@polkadot/types";
+import Tabs from "@polkadot/react-components/Tabs";
+import { useCall, useAccounts, useApi } from "@polkadot/react-hooks";
+
+import Actions from "./Actions/Actions";
 import Overview from "./Overview/Overview";
-import Query from "./Query/Query";
-import Targets from "./Targets/Targets";
+import Summary from "./Overview/Summary";
 import { MAX_SESSIONS } from "./constants";
 import useSessionRewards from "./useSessionRewards";
 
-function Staking({ basePath, className }: Props): React.ReactElement {
+const EMPY_ACCOUNTS: string[] = [];
+const EMPTY_EXPOSURES: Exposure[] = [];
+const EMPTY_ALL: [string[], Exposure[]] = [EMPY_ACCOUNTS, EMPTY_EXPOSURES];
+
+function transformAllContracts([contracts]: [AccountId[], Option<AccountId>[]]): string[] {
+  return contracts.map((accountId): string => accountId.toString());
+}
+
+function transformStakedContracts([contracts, exposures]: [AccountId[], Exposure[]]): [string[], Exposure[]] {
+  return [contracts.map((accountId): string => accountId.toString()), exposures];
+}
+
+function Staking({ basePath, className }: Props): React.ReactElement<Props> {
   const { api } = useApi();
   const { hasAccounts } = useAccounts();
-  const hasQueries = hasAccounts && !!api.query.imOnline?.authoredBlocks;
-
   const { pathname } = useLocation();
-  const [next, setNext] = useState<string[]>([]);
-  const allStashes = useCall<string[]>(api.derive.staking.stashes, [], {
-    defaultValue: [],
-    transform: ([stashes]: [AccountId[]]): string[] => stashes.map((accountId): string => accountId.toString()),
+  const allContractIds = useCall<string[]>(api.query.operator?.contractHasOperator, [], {
+    defaultValue: EMPY_ACCOUNTS,
+    transform: transformAllContracts,
   }) as string[];
-  const recentlyOnline = useCall<DeriveHeartbeats>(api.derive.imOnline.receivedHeartbeats, []);
-  const stakingOverview = useCall<DeriveStakingOverview>(api.derive.staking.overview, []);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const stakedContracts = useCall<[string[], Exposure[]]>((api.derive as any).plasmStaking.stakedOperators, [], {
+    defaultValue: EMPTY_ALL,
+    transform: transformStakedContracts,
+  }) as [string[], Exposure[]];
+  const hasQueries = hasAccounts && !!api.query.imOnline?.authoredBlocks;
   const sessionRewards = useSessionRewards(MAX_SESSIONS);
 
-  const items = [
-    {
-      isRoot: true,
-      name: "overview",
-      text: "Staking overview",
-    },
-    {
-      name: "waiting",
-      text: "Waiting",
-    },
-    {
-      name: "returns",
-      text: "Returns",
-    },
-    {
-      name: "actions",
-      text: "Account actions",
-    },
-    {
-      hasParams: true,
-      name: "query",
-      text: "Validator stats",
-    },
-  ];
-
-  useEffect((): void => {
-    stakingOverview &&
-      setNext(allStashes.filter((address): boolean => !stakingOverview.validators.includes(address as any)));
-  }, [allStashes, stakingOverview?.validators]);
-
   return (
-    <main className={className}>
-      <Header as="h2" className="title">
-        Staking
-      </Header>
-
-      <Tabs
-        basePath={basePath ?? ""}
-        hidden={hasAccounts ? (hasQueries ? [] : ["query"]) : ["actions", "query"]}
-        items={items}
+    <main className={`staking--App ${className}`}>
+      <header>
+        <Tabs
+          basePath={basePath}
+          hidden={hasAccounts ? (hasQueries ? [] : ["query"]) : ["actions", "query"]}
+          items={[
+            {
+              isRoot: true,
+              name: "overview",
+              text: "Staking overview",
+            },
+            {
+              name: "actions",
+              text: "Account actions",
+            },
+          ]}
+        />
+      </header>
+      <Summary
+        isVisible={pathname === basePath}
+        allContracts={allContractIds}
+        stakedContracts={stakedContracts[0]}
+        stakedExposures={stakedContracts[1]}
+        sessionRewards={sessionRewards}
       />
-
-      <Switch>
-        <Route path={[`${basePath}/query/:value`, `${basePath}/query`]}>
-          <Query sessionRewards={sessionRewards} />
-        </Route>
-        <Route path={`${basePath}/returns`}>
-          <Targets sessionRewards={sessionRewards} />
-        </Route>
-      </Switch>
+      <Actions allContracts={allContractIds} isVisible={pathname === `${basePath}/actions`} />
       <Overview
         hasQueries={hasQueries}
         isVisible={[basePath, `${basePath}/waiting`].includes(pathname)}
-        recentlyOnline={recentlyOnline}
-        next={next}
-        stakingOverview={stakingOverview}
+        allContracts={allContractIds}
+        electedContracts={stakedContracts[0]}
       />
     </main>
   );
 }
 
 export default styled(Staking)`
-  .title {
-    margin: 1rem;
+  .staking--hidden {
+    display: none;
+  }
+
+  .staking--queryInput {
+    margin-bottom: 1.5rem;
+  }
+
+  .staking--Chart h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  .staking--Chart + .staking--Chart {
+    margin-top: 1.5rem;
   }
 `;

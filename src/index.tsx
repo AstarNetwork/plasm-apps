@@ -10,7 +10,7 @@ import "./style.css";
 import App from "./App";
 import Api from "./Api/Api";
 
-const wsEndpoint = "ws://127.0.0.1:9944";
+const wsEndpoint = process.env.WS_URL;
 
 ReactDOM.render(
   <Suspense fallback="...">

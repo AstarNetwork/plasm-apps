@@ -51,7 +51,7 @@ function infoLatestBabe(api: ApiInterfaceRx): Observable<Partial<DeriveSessionPr
       ([indexes, slots]: [DeriveSessionIndexes, ResultSlots]): Partial<DeriveSessionProgress> =>
         createDerivedLatest(api, [
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          [true, api.consts.babe.epochDuration, api.consts.plasmStaking.sessionsPerEra as any],
+          [true, api.consts.babe.epochDuration, api.consts.plasmRewards.sessionsPerEra as any],
           indexes,
           slots,
         ])

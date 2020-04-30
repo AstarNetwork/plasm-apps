@@ -1,4 +1,3 @@
-import { DeriveHeartbeats, DeriveStakingOverview } from "@polkadot/api-derive/types";
 import { BareProps } from "@polkadot/react-components/types";
 
 import React, { useContext } from "react";
@@ -10,22 +9,20 @@ import CurrentList from "./CurrentList";
 interface Props extends BareProps {
   hasQueries: boolean;
   isVisible: boolean;
-  recentlyOnline?: DeriveHeartbeats;
-  next: string[];
-  stakingOverview?: DeriveStakingOverview;
+  allContracts: string[];
+  electedContracts: string[];
 }
 
 export default function Overview({
   hasQueries,
   isVisible,
   className,
-  recentlyOnline,
-  next,
-  stakingOverview,
+  allContracts,
+  electedContracts,
 }: Props): React.ReactElement<Props> {
   const { pathname } = useLocation();
   const { byAuthor, lastBlockAuthors } = useContext(BlockAuthorsContext);
-  const isIntentions = pathname !== "/staking";
+  const isIntentions = pathname !== "/dapps-staking";
 
   return (
     <div className={`staking--Overview ${className} ${!isVisible && "staking--hidden"}`}>
@@ -35,9 +32,8 @@ export default function Overview({
         isIntentions={isIntentions}
         isVisible={isVisible}
         lastAuthors={lastBlockAuthors}
-        next={next}
-        recentlyOnline={recentlyOnline}
-        stakingOverview={stakingOverview}
+        allContracts={allContracts}
+        electedContracts={electedContracts}
       />
     </div>
   );

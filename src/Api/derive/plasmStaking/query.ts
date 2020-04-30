@@ -1,6 +1,6 @@
 import { ApiInterfaceRx } from "@polkadot/api/types";
 import { AccountId, Exposure, IndividualExposure } from "@polkadot/types/interfaces";
-import { Parameters } from "../../../utils";
+import { StakingParameters } from "../../../plasm";
 
 import { DerivedDappsStakingQuery } from "../types";
 
@@ -15,7 +15,7 @@ interface ParseInput {
   nominators?: AccountId[];
   stakers?: Exposure;
   contractId: AccountId;
-  contractParameters: Option<Parameters>;
+  contractParameters: Option<StakingParameters>;
 }
 
 function parseResult({
@@ -40,7 +40,7 @@ function retrieve(api: ApiInterfaceRx, contractId: AccountId): Observable<Derive
   return combineLatest([
     api.query.plasmStaking.stakedContracts<Exposure>(contractId),
     api.query.operator.contractHasOperator<Option<AccountId>>(contractId),
-    api.query.operator.contractParameters<Option<Parameters>>(contractId),
+    api.query.operator.contractParameters<Option<StakingParameters>>(contractId),
   ]).pipe(
     map(
       ([stakers, operatorId, contractParameters]): DerivedDappsStakingQuery => {

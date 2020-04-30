@@ -1,10 +1,12 @@
 import React from "react";
-import { Header } from "semantic-ui-react";
+import AccountsApp from "./Accounts/Accounts";
 
-export default function Accounts(): React.ReactElement {
+import { Props } from "./types";
+
+export default function Accounts({ basePath, onStatusChange }: Props): React.ReactElement {
   return (
     <>
-      <Header as="h2"></Header>
+      <AccountsApp basePath={`${basePath}`} onStatusChange={onStatusChange} />
     </>
   );
 }

@@ -38,6 +38,10 @@ module.exports = {
         use: "ts-loader",
       },
       {
+        test: /\.md$/,
+        use: [require.resolve("html-loader"), require.resolve("markdown-loader")],
+      },
+      {
         test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
         use: [
           {
@@ -68,7 +72,7 @@ module.exports = {
     new webpack.DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify(ENV),
-        WS_URL: JSON.stringify(process.env.WS_URL),
+        WS_URL: JSON.stringify(isProduction ? "wss://testnet.plasmnet.io/" : "ws://127.0.0.1:9944"),
       },
     }),
     new CopyWebpackPlugin([{ from: "public" }]),
@@ -90,4 +94,5 @@ module.exports = {
         }),
   ].filter((plugin) => plugin),
   watch: !isProduction,
+  devtool: "inline-source-map",
 };

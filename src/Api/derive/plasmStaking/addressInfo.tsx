@@ -147,8 +147,8 @@ function retrieveInfo(
   controllerId: AccountId
 ): Observable<DeriveStakingQuery> {
   return (api.queryMulti([
-    [api.query.plasmStaking.payee, stashId],
-    [api.query.plasmStaking.ledger, controllerId],
+    [api.query.dappsStaking.payee, stashId],
+    [api.query.dappsStaking.ledger, controllerId],
   ]) as Observable<MultiResultV2>).pipe(
     map(
       ([rewardDestination, stakingLedger]: MultiResultV2): DeriveStakingQuery =>
@@ -158,7 +158,7 @@ function retrieveInfo(
 }
 
 function retrieveQuery(api: ApiInterfaceRx, stashId: AccountId): Observable<DeriveStakingQuery> {
-  return api.query.plasmStaking
+  return api.query.dappsStaking
     .bonded<Option<AccountId>>(stashId)
     .pipe(
       switchMap(

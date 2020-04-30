@@ -1,12 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint new-cap: ["error", { "newIsCap": false }] */
 // @ts-check
 // Import the API
 import { Struct, u128, bool, u32, Enum, Vec } from "@polkadot/types";
 import { AccountId, Balance, BlockNumber } from "@polkadot/types/interfaces";
+import { BTreeMap } from "@polkadot/types/codec";
 import { registry } from "@polkadot/react-api";
 
-export class Parameters extends Struct {
+export class StakingParameters extends Struct {
   constructor(value?: any) {
     super(
       registry,
@@ -19,8 +19,8 @@ export class Parameters extends Struct {
     );
   }
 
-  static default(): Parameters {
-    return new Parameters({
+  static default(): StakingParameters {
+    return new StakingParameters({
       canBeNominated: new bool(registry, true),
       optionExpired: new u128(registry, 0),
       optionP: new u32(registry, 0),
@@ -49,7 +49,17 @@ export interface OfferOf extends Struct {
   readonly state: OfferState;
 }
 
+export interface EraStakingPoints extends Struct {
+  readonly total: Balance;
+  readonly indivisual: BTreeMap<AccountId, Balance>;
+}
+
 export const types = {
+  StakingParameters: {
+    canBeNominated: "bool",
+    optionExpired: "u128",
+    optionP: "u32",
+  },
   Parameters: {
     canBeNominated: "bool",
     optionExpired: "u128",
@@ -65,5 +75,12 @@ export const types = {
     amount: "Balance",
     expired: "BlockNumber",
     state: "OfferState",
+  },
+  EraStakingPoints: {
+    total: "Balance",
+    indivisual: "BTreeMap<AccountId, Balance>",
+  },
+  Releases: {
+    _enum: ["V1_0_0"],
   },
 };
