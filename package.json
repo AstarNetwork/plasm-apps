@@ -8,7 +8,9 @@
     "prod:build": "TARGET=main ENV=production webpack --config webpack.config.js",
     "dev:start": "TARGET=local ENV=development webpack --config webpack.config.js",
     "test:start": "TARGET=test ENV=development webpack --config webpack.config.js",
-    "prod:start": "TARGET=main ENV=development webpack --config webpack.config.js"
+    "prod:start": "TARGET=main ENV=development webpack --config webpack.config.js",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
+    "test": "jest ./src --passWithNoTests"
   },
   "resolutions": {
     "@polkadot/ui-keyring": "0.52.1"
@@ -40,6 +42,7 @@
     "file-loader": "^6.0.0",
     "file-saver": "^2.0.2",
     "html-loader": "^1.1.0",
+    "jest": "^25.5.2",
     "markdown-loader": "^5.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
