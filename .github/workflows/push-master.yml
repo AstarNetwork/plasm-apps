@@ -28,7 +28,7 @@ jobs:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: |
         yarn install --frozen-lockfile
-        yarn prod:build
+        yarn build:main
 
   dummy:
     name: Dummy

@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev:build": "TARGET=local ENV=production webpack --config webpack.config.js",
-    "test:build": "TARGET=test ENV=production webpack --config webpack.config.js",
-    "prod:build": "TARGET=main ENV=production webpack --config webpack.config.js",
-    "dev:start": "TARGET=local ENV=development webpack --config webpack.config.js",
-    "test:start": "TARGET=test ENV=development webpack --config webpack.config.js",
-    "prod:start": "TARGET=main ENV=development webpack --config webpack.config.js",
+    "build:local": "TARGET=local ENV=production webpack --config webpack.config.js",
+    "build:dusty": "TARGET=dusty ENV=production webpack --config webpack.config.js",
+    "build:main": "TARGET=main ENV=production webpack --config webpack.config.js",
+    "start:local": "TARGET=local ENV=development webpack --config webpack.config.js",
+    "start:dusty": "TARGET=dusty ENV=development webpack --config webpack.config.js",
+    "start:main": "TARGET=main ENV=development webpack --config webpack.config.js",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
     "test": "jest ./src --passWithNoTests"
   },

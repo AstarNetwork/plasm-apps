@@ -71,8 +71,8 @@ module.exports = {
         WS_URL: JSON.stringify(
           TARGET === "main"
             ? "wss://rpc.plasmnet.io/"
-            : TARGET === "test"
-            ? "wss://rpc.testnet.plasmnet.io/"
+            : TARGET === "dusty"
+            ? "wss://rpc.dusty.plasmnet.io/"
             : "ws://127.0.0.1:9944"
         ),
       },
