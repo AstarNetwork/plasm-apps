@@ -1,3 +1,13 @@
+---
+name: Future task issue template
+about: Describe this issue template's purpose here.
+title: ''
+labels: ''
+assignees: ''
+
+---
+
+
 # Description
 {write description of what the feature should be}
 
