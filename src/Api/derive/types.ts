@@ -1,15 +1,14 @@
-import { AccountId, Nominations, Exposure, RewardDestination, StakingLedger } from "@polkadot/types/interfaces";
+import { AccountId, Nominations, RewardDestination, StakingLedger } from "@polkadot/types/interfaces";
 import { Option } from "@polkadot/types";
 
 import { StakingParameters } from "../../plasm";
+import { EraStakingPoints } from "../../plasm/types";
 
 export type DeriveOperators = [AccountId[], Option<AccountId>[]];
-export type DerivedStakedOperators = [AccountId[], Exposure[]];
 
 export interface DerivedDappsStakingQuery {
   operatorId: undefined | AccountId;
-  nominators?: AccountId[];
-  stakers?: Exposure;
+  stakingPoints?: EraStakingPoints;
   contractId: AccountId;
   contractParameters: undefined | StakingParameters;
 }

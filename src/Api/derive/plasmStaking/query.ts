@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApiInterfaceRx } from "@polkadot/api/types";
-import { AccountId, Exposure, IndividualExposure } from "@polkadot/types/interfaces";
+import { AccountId } from "@polkadot/types/interfaces";
 import { StakingParameters } from "../../../plasm";
 
 import { DerivedDappsStakingQuery } from "../types";
@@ -9,49 +10,42 @@ import { map } from "rxjs/operators";
 import { createType, Option } from "@polkadot/types";
 
 import { memo } from "@polkadot/api-derive/util/memo";
+import { EraStakingPoints } from "../../../plasm/types";
 
 interface ParseInput {
   operatorId: Option<AccountId>;
-  nominators?: AccountId[];
-  stakers?: Exposure;
+  stakingPoints: EraStakingPoints;
   contractId: AccountId;
   contractParameters: Option<StakingParameters>;
 }
 
 function parseResult({
   operatorId,
-  nominators,
-  stakers,
+  stakingPoints,
   contractId,
   contractParameters,
 }: ParseInput): DerivedDappsStakingQuery {
   const _operatorId = operatorId.unwrapOr(undefined);
   const _contractParameters = contractParameters.unwrapOr(undefined);
   return {
-    operatorId: _operatorId ? (_operatorId as any)[0] : undefined,
-    nominators,
-    stakers,
+    operatorId: _operatorId ? (_operatorId.toString() as any) : undefined,
+    stakingPoints,
     contractId,
     contractParameters: _contractParameters,
   };
 }
 
-function retrieve(api: ApiInterfaceRx, contractId: AccountId): Observable<DerivedDappsStakingQuery> {
+function retrieve(api: ApiInterfaceRx, era: any, contractId: AccountId): Observable<DerivedDappsStakingQuery> {
   return combineLatest([
-    api.query.plasmStaking.stakedContracts<Exposure>(contractId),
+    api.query.dappsStaking.erasStakingPoints<EraStakingPoints>(era, contractId),
     api.query.operator.contractHasOperator<Option<AccountId>>(contractId),
     api.query.operator.contractParameters<Option<StakingParameters>>(contractId),
   ]).pipe(
     map(
-      ([stakers, operatorId, contractParameters]): DerivedDappsStakingQuery => {
-        const staker: Exposure = (stakers as any)[0];
-        const nominators: AccountId[] = staker
-          ? staker.others.map<AccountId>((indv: IndividualExposure) => indv.who)
-          : [];
+      ([stakingPoints, operatorId, contractParameters]): DerivedDappsStakingQuery => {
         return parseResult({
           operatorId,
-          nominators,
-          stakers: staker || undefined,
+          stakingPoints,
           contractId,
           contractParameters,
         });
@@ -65,8 +59,8 @@ function retrieve(api: ApiInterfaceRx, contractId: AccountId): Observable<Derive
  */
 export function query(api: ApiInterfaceRx): (_accountId: Uint8Array | string) => Observable<DerivedDappsStakingQuery> {
   return memo(
-    (accountId: Uint8Array | string): Observable<DerivedDappsStakingQuery> => {
-      return retrieve(api, createType(api.registry, "AccountId", accountId));
+    (era: any, accountId: Uint8Array | string): Observable<DerivedDappsStakingQuery> => {
+      return retrieve(api, era, createType(api.registry, "AccountId", accountId));
     }
   );
 }

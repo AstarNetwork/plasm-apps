@@ -1,5 +1,6 @@
 import { DeriveFees, DeriveBalancesAll } from "@polkadot/api-derive/types";
 import { AccountId, Balance, BlockNumber, Hash, SessionIndex } from "@polkadot/types/interfaces";
+import { BTreeMap } from "@polkadot/types";
 
 export type Nominators = Record<string, string[]>;
 
@@ -26,4 +27,9 @@ export interface SessionRewards {
   sessionIndex: SessionIndex;
   slashes: Slash[];
   treasury: Balance;
+}
+
+export interface EraStakingPoints {
+  total: Balance;
+  individual: BTreeMap<AccountId, Balance>;
 }

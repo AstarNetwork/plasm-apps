@@ -1,4 +1,5 @@
-import { Exposure, Balance } from "@polkadot/types/interfaces";
+import { Balance, EraIndex } from "@polkadot/types/interfaces";
+import { Option } from "@polkadot/types";
 
 import BN from "bn.js";
 import React, { useEffect, useState } from "react";
@@ -15,7 +16,6 @@ interface Props {
   isVisible: boolean;
   allContracts: string[];
   stakedContracts: string[];
-  stakedExposures: Exposure[];
   sessionRewards: SessionRewards[];
 }
 
@@ -24,20 +24,11 @@ interface StakeInfo {
   staked: string | null;
 }
 
-function extractInfo(stakedExposures: Exposure[]): BN {
-  let totalStaked = new BN(0);
-  stakedExposures.map((exp) => {
-    totalStaked = totalStaked.add(exp.total.unwrap());
-  });
-  return totalStaked;
-}
-
 function Summary({
   className,
   isVisible,
   allContracts,
   stakedContracts,
-  stakedExposures,
   sessionRewards,
 }: Props): React.ReactElement<Props> {
   const { api } = useApi();
@@ -45,6 +36,8 @@ function Summary({
   const [lastReward, setLastReward] = useState(new BN(0));
   const [{ percentage, staked }, setStakeInfo] = useState<StakeInfo>({ percentage: "-", staked: null });
   const [total, setTotal] = useState<string | null>(null);
+  const currentEra = useCall<Option<EraIndex>>(api.query.plasmRewards.currentEra, [])?.unwrap()?.toNumber() ?? 0;
+  const totalStaked = useCall<Balance>(api.query.dappsStaking.erasTotalStake, [currentEra]);
 
   useEffect((): void => {
     if (sessionRewards && sessionRewards.length) {
@@ -65,7 +58,6 @@ function Summary({
   }, [totalInsurance]);
 
   useEffect((): void => {
-    const totalStaked = extractInfo(stakedExposures);
     if (totalInsurance && totalStaked?.gtn(0)) {
       setStakeInfo({
         percentage: `${(totalStaked.muln(10000).div(totalInsurance).toNumber() / 100).toFixed(2)}%`,
@@ -74,7 +66,7 @@ function Summary({
         }`,
       });
     }
-  }, [totalInsurance, stakedExposures]);
+  }, [totalInsurance]);
 
   return (
     <SummaryBox className={`${className} ${!isVisible && "staking--hidden"}`}>

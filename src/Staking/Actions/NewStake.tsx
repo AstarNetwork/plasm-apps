@@ -4,15 +4,7 @@ import { CalculateBalanceProps } from "../types";
 import BN from "bn.js";
 import React from "react";
 import { SubmittableExtrinsic } from "@polkadot/api/promise/types";
-import {
-  Button,
-  Dropdown,
-  InputAddress,
-  InputBalanceBonded,
-  Modal,
-  TxButton,
-  TxComponent,
-} from "@polkadot/react-components";
+import { Dropdown, InputAddress, InputBalanceBonded, Modal, TxButton, TxComponent } from "@polkadot/react-components";
 import { withApi, withMulti } from "@polkadot/react-api/hoc";
 
 import detectUnsafe from "../unsafeChains";
@@ -112,20 +104,16 @@ class NewStake extends TxComponent<Props, State> {
           />
         </Modal.Content>
         <Modal.Actions onCancel={onClose}>
-          <Button.Group>
-            <Button isNegative onClick={onClose} label={"Cancel"} icon="cancel" />
-            <Button.Or />
-            <TxButton
-              accountId={stashId}
-              isDisabled={!canSubmit}
-              isPrimary
-              label={"Bond"}
-              icon="sign-in"
-              onClick={onClose}
-              extrinsic={extrinsic}
-              ref={this.button}
-            />
-          </Button.Group>
+          <TxButton
+            accountId={stashId}
+            isDisabled={!canSubmit}
+            isPrimary
+            label={"Bond"}
+            icon="sign-in"
+            onClick={onClose}
+            extrinsic={extrinsic}
+            ref={this.button}
+          />
         </Modal.Actions>
       </Modal>
     );

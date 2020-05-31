@@ -128,6 +128,7 @@ class ContractModal<P extends ContractModalProps, S extends ContractModalState> 
         onChange={this.onChangeGas}
         onEnter={this.sendTx}
         value={gasLimit || ""}
+        bitLength={128}
       />
     );
   }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Dropdown, InputAddress, Modal, TxButton, TxComponent } from "@polkadot/react-components";
+import { Dropdown, InputAddress, Modal, TxButton, TxComponent } from "@polkadot/react-components";
 import { withMulti } from "@polkadot/react-api/hoc";
 
 import { rewardDestinationOptions } from "../constants";
@@ -32,21 +32,17 @@ class SetRewardDestination extends TxComponent<Props, State> {
       <Modal className="staking--Bonding" header={"Bonding Preferences"} open size="small">
         {this.renderContent()}
         <Modal.Actions onCancel={onClose}>
-          <Button.Group>
-            <Button isNegative onClick={onClose} label={"Cancel"} icon="cancel" />
-            <Button.Or />
-            <TxButton
-              accountId={controllerId}
-              isDisabled={!canSubmit}
-              isPrimary
-              label={"Set reward destination"}
-              icon="sign-in"
-              onClick={onClose}
-              params={[destination]}
-              tx={"dappsStaking.setPayee"}
-              ref={this.button}
-            />
-          </Button.Group>
+          <TxButton
+            accountId={controllerId}
+            isDisabled={!canSubmit}
+            isPrimary
+            label={"Set reward destination"}
+            icon="sign-in"
+            onClick={onClose}
+            params={[destination]}
+            tx={"dappsStaking.setPayee"}
+            ref={this.button}
+          />
         </Modal.Actions>
       </Modal>
     );

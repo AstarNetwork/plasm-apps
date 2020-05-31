@@ -16,7 +16,7 @@ interface Props extends BareProps {
 const PARAMETERS_PARAMS = [
   {
     name: "StakingParameters",
-    type: getTypeDef('{"canBeNominated": "bool", "optionExpied" : "u128", "optionP" : "u32" }'),
+    type: getTypeDef('{ "canBeNominated": "bool", "optionExpired" : "u128", "optionP" : "u32" }'),
   },
 ];
 

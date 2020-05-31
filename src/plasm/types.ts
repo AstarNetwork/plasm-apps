@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 /* eslint new-cap: ["error", { "newIsCap": false }] */
 // @ts-check
 // Import the API
@@ -7,6 +8,7 @@ import { BTreeMap } from "@polkadot/types/codec";
 import { registry } from "@polkadot/react-api";
 
 export class StakingParameters extends Struct {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(value?: any) {
     super(
       registry,
@@ -51,7 +53,7 @@ export interface OfferOf extends Struct {
 
 export interface EraStakingPoints extends Struct {
   readonly total: Balance;
-  readonly indivisual: BTreeMap<AccountId, Balance>;
+  readonly individual: BTreeMap<AccountId, Balance>;
 }
 
 export const types = {
@@ -78,20 +80,16 @@ export const types = {
   },
   EraStakingPoints: {
     total: "Balance",
-    indivisual: "BTreeMap<AccountId, Balance>",
+    individual: "BTreeMap<AccountId, Balance>",
   },
   Releases: {
     _enum: ["V1_0_0"],
   },
 
-  BalanceLock: "BalanceLockTo212",
-  DispatchError: "DispatchErrorTo198",
-  DispatchResult: "DispatchResultTo198",
-  DispatchInfo: {
-    weight: "Weight",
-    class: "DispatchClass",
+  WeightToFeeCoefficient: {
+    coeff_integer: "Balance",
+    coeff_frac: "Perbill",
+    negative: "bool",
+    degree: "u8",
   },
-  ReferendumInfo: "ReferendumInfoTo239",
-  StakingLedger: "StakingLedgerTo223",
-  Weight: "u32",
 };

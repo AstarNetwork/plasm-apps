@@ -43,6 +43,7 @@ interface Props {
 
 function Account({ address, className, filter, isFavorite, toggleFavorite }: Props): React.ReactElement<Props> | null {
   const api = useApi();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const info = useCall<DeriveAccountInfo>(api.api.derive.accounts.info as any, [address]);
   const recoveryInfo = useCall<RecoveryConfig | null>(api.api.query.recovery?.recoverable, [address], {
     transform: (opt: Option<RecoveryConfig>): RecoveryConfig | null => opt.unwrapOr(null),

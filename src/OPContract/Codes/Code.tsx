@@ -100,7 +100,7 @@ class Code extends React.PureComponent<Props, State> {
       return null;
     }
 
-    const modals = [];
+    const modals: JSX.Element[] = [];
 
     if (isForgetOpen) {
       modals.push(

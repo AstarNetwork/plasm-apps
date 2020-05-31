@@ -22,7 +22,7 @@ export default function Overview({
 }: Props): React.ReactElement<Props> {
   const { pathname } = useLocation();
   const { byAuthor, lastBlockAuthors } = useContext(BlockAuthorsContext);
-  const isIntentions = pathname !== "/dapps-staking";
+  const isIntentions = pathname !== "/staking";
 
   return (
     <div className={`staking--Overview ${className} ${!isVisible && "staking--hidden"}`}>
