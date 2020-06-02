@@ -13,12 +13,14 @@
     "test": "jest ./src --passWithNoTests"
   },
   "resolutions": {
+    "@polkadot/api": "^1.16.1",
+    "@polkadot/keyring": "2.11.1",
     "@polkadot/ui-keyring": "0.52.1"
   },
   "dependencies": {
-    "@polkadot/api": "^1.9.1",
-    "@polkadot/api-contract": "^1.9.1",
-    "@polkadot/api-derive": "^1.11.2",
+    "@polkadot/api": "^1.16.1",
+    "@polkadot/api-contract": "^1.16.1",
+    "@polkadot/api-derive": "^1.16.1",
     "@polkadot/app-contracts": "^0.39.1",
     "@polkadot/app-explorer": "^0.39.1",
     "@polkadot/app-extrinsics": "^0.39.1",
@@ -30,7 +32,7 @@
     "@polkadot/react-hooks": "^0.39.1",
     "@polkadot/react-params": "^0.39.1",
     "@polkadot/react-signer": "^0.39.1",
-    "@polkadot/types": "^1.11.2",
+    "@polkadot/types": "^1.16.1",
     "@polkadot/ui-assets": "^0.52.1",
     "@polkadot/ui-keyring": "^0.52.1",
     "@polkadot/util-crypto": "^2.8.1",

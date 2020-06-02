@@ -1,7 +1,6 @@
 import { Hash } from "@polkadot/types/interfaces";
 import { ApiProps } from "@polkadot/react-api/types";
 
-import BN from "bn.js";
 import React from "react";
 import { SubmittableResult } from "@polkadot/api";
 import { withApi, withMulti } from "@polkadot/react-api";
@@ -10,12 +9,10 @@ import { compactAddLength } from "@polkadot/util";
 
 import ContractModal, { ContractModalProps, ContractModalState } from "../Modal";
 import store from "../store";
-import { GAS_LIMIT } from "../constants";
 
 interface Props extends ContractModalProps, ApiProps {}
 
 interface State extends ContractModalState {
-  gasLimit: BN;
   isWasmValid: boolean;
   wasm?: Uint8Array | null;
 }
@@ -26,7 +23,6 @@ class Upload extends ContractModal<Props, State> {
 
     this.defaultState = {
       ...this.defaultState,
-      gasLimit: new BN(GAS_LIMIT),
       isWasmValid: false,
       wasm: null,
     };
@@ -52,15 +48,14 @@ class Upload extends ContractModal<Props, State> {
         />
         {this.renderInputName()}
         {this.renderInputAbi()}
-        {this.renderInputGas()}
       </>
     );
   };
 
   protected renderButtons = (): React.ReactNode => {
     const { api } = this.props;
-    const { accountId, gasLimit, isBusy, isNameValid, isWasmValid, wasm } = this.state;
-    const isValid = !isBusy && accountId && isNameValid && isWasmValid && !gasLimit.isZero() && !!accountId;
+    const { accountId, isBusy, isNameValid, isWasmValid, wasm } = this.state;
+    const isValid = !isBusy && accountId && isNameValid && isWasmValid && !!accountId;
 
     return (
       <TxButton
@@ -72,7 +67,7 @@ class Upload extends ContractModal<Props, State> {
         onClick={this.toggleBusy(true)}
         onSuccess={this.onSuccess}
         onFailed={this.toggleBusy(false)}
-        params={[gasLimit, wasm]}
+        params={[wasm]}
         tx={api.tx.contracts ? "contracts.putCode" : "contract.putCode"}
         ref={this.button}
         withSpinner

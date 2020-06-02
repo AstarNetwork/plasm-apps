@@ -6,6 +6,7 @@ import { StatusContext } from "@polkadot/react-components";
 import { Props } from "./types";
 import Accouunts from "./Accounts";
 import OPContract from "./OPContract/OPContract";
+import Operator from "./Operator/Operator";
 import Staking from "./Staking/Staking";
 import ChainState from "./ChainState";
 import Extrinsics from "./Extrinsics";
@@ -23,6 +24,9 @@ function Content({ className }: Props): React.ReactElement {
         </Route>
         <Route path="/operated-contracts">
           <OPContract basePath="/operated-contracts" onStatusChange={queueAction} />
+        </Route>
+        <Route path="/operator">
+          <Operator basePath="/operator" onStatusChange={queueAction} />
         </Route>
         <Route path="/staking">
           <Staking basePath="/staking" onStatusChange={queueAction} />

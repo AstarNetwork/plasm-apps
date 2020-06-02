@@ -25,6 +25,7 @@ function SetSessionKey({ className, senderId: propSenderId, onClose }: Props): R
   useEffect((): void => {
     if (!!keys && /^0x[0-9a-f]+$/i.test(keys)) {
       try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         setExtrinsic(api.tx.session.setKeys(keys as any, EMPTY_PROOF as any));
         setHasError(false);
       } catch {

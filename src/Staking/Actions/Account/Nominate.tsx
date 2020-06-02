@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { InputAddressMulti, Button, InputAddress, Modal, TxButton } from "@polkadot/react-components";
+import { InputAddress, Modal, TxButton } from "@polkadot/react-components";
 import { useFavorites } from "@polkadot/react-hooks";
-import { Props as BaseProps } from "../../../types";
+import BN from "bn.js";
 
+import { Props as BaseProps } from "../../../types";
 import { STORE_FAVS_BASE } from "../../constants";
+import InputAddressMulti from "./InputAddressMulti";
 
 interface Props extends BaseProps {
   controllerId: string;
@@ -27,6 +29,7 @@ function Nominate({
   const [favorites] = useFavorites(STORE_FAVS_BASE);
   const [contracts, setContracts] = useState<string[]>([]);
   const [selection, setSelection] = useState<string[]>([]);
+  const [nominateValues, setNominateValues] = useState<Map<string, BN>>(new Map());
   const [available, setAvailable] = useState<string[]>([]);
 
   useEffect((): void => {
@@ -69,25 +72,28 @@ function Nominate({
           help={"Filter available candidates based on name, address or short account index."}
           label={"filter candidates"}
           maxCount={MAX_NOMINEES}
-          onChange={setSelection}
-          value={selection}
+          onChange={(value: [string[], Map<string, BN>]): void => {
+            setSelection(value[0]);
+            setNominateValues(value[1]);
+          }}
+          value={[selection, new Map()]}
         />
       </Modal.Content>
       <Modal.Actions onCancel={onClose}>
-        <Button.Group>
-          <Button isNegative onClick={onClose} label={"Cancel"} icon="cancel" />
-          <Button.Or />
-          <TxButton
-            accountId={controllerId}
-            isDisabled={!selection.length}
-            isPrimary
-            onClick={onClose}
-            params={[selection]}
-            label={"Nominate"}
-            icon="hand paper outline"
-            tx="dappsStaking.nominateContracts"
-          />
-        </Button.Group>
+        <TxButton
+          accountId={controllerId}
+          isDisabled={!selection.length}
+          isPrimary
+          onClick={onClose}
+          params={[
+            selection.map((s) => {
+              return [s, nominateValues.get(s) ?? new BN(0)];
+            }),
+          ]}
+          label={"Nominate"}
+          icon="hand paper outline"
+          tx="dappsStaking.nominateContracts"
+        />
       </Modal.Actions>
     </Modal>
   );

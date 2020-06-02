@@ -1,4 +1,4 @@
-import { CodeStored } from "@polkadot/app-contracts/types";
+import { CodeStored } from "./types";
 
 import React from "react";
 import { Button, CodeRow, Modal } from "@polkadot/react-components";

@@ -91,6 +91,7 @@ function Offer({ className, onClose, senderId: propSenderId, buyerId: propBuyerI
   const onOffer = (accountId: string | null): void => {
     setSenderId(accountId);
     if (accountId) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       api.query.operator.operatorHasContracts<AccountId[] & Codec>(accountId as any).then((contracts): void => {
         const contractList: string[] = contracts.map((c): string => c.toString());
         setContracts(contractList);

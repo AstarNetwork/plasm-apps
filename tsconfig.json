@@ -5,7 +5,7 @@
     "module": "es6",
     "jsx": "react",
     "strict": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
     "moduleResolution": "node",

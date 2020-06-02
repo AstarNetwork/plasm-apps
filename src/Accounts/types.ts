@@ -5,6 +5,7 @@ import { WithTranslation } from "react-i18next";
 
 export interface BareProps {
   className?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   style?: Record<string, any>;
 }
 

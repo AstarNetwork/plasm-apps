@@ -29,7 +29,7 @@ function parseResult(
     payee,
     ledger: _ledger,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    nominations: _nominations ? (_nominations as any)[0] : undefined,
+    nominations: _nominations ? (_nominations as any) : undefined,
   };
 }
 

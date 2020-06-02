@@ -15,7 +15,6 @@ import keyring from "@polkadot/ui-keyring";
 import { Dropdown, InputBalance, MessageSignature, TxButton } from "@polkadot/react-components";
 import createValues from "@polkadot/react-params/values";
 import { StakingParameters } from "../plasm";
-import { bool } from "@polkadot/types";
 
 import ContractModal, { ContractModalProps, ContractModalState } from "./Modal";
 import Params from "./Params";
@@ -294,7 +293,7 @@ class Deploy extends ContractModal<Props, State> {
     }
     const { canBeNominated, optionExpired, optionP } = operateParameters[0].value;
     const ops = new StakingParameters({
-      canBeNominated: new bool(canBeNominated),
+      canBeNominated,
       optionExpired,
       optionP,
     });

@@ -61,6 +61,7 @@ function filterEvents(
 function Status({ optionsAll, queueAction, stqueue, txqueue }: Props): React.ReactElement<Props> {
   const { api, isApiReady } = useApi();
   const { allAccounts } = useAccounts();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const events = useCall<EventRecord[]>(isApiReady && (api.query.system?.events as any), []);
 
   useEffect((): void => {

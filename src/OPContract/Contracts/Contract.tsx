@@ -9,8 +9,7 @@ import { PromiseContract as ApiContract } from "@polkadot/api-contract";
 import { AddressRow, Button, Card, Forget, Messages } from "@polkadot/react-components";
 
 import { useApi, useCall } from "@polkadot/react-hooks";
-import { Option } from "@polkadot/types";
-import { AccountId } from "@polkadot/types/interfaces";
+import AccountId from "@polkadot/types/generic/AccountId";
 
 interface Props extends RouteComponentProps {
   basePath: string;
@@ -25,21 +24,13 @@ const ContractCard = styled(Card)`
   }
 `;
 
-function transformContract(contractId: Option<AccountId>): string {
-  const id = contractId.unwrapOr("undefined");
-  return id ? id[0].toString() : "undefined";
-}
-
 function Contract(props: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
   const {
     contract: { abi, address },
     onCall,
   } = props;
-  const operatorId = useCall<string>(api.query.operator?.contractHasOperator, [address.toString()], {
-    defaultValue: "undefined",
-    transform: transformContract,
-  }) as string;
+  const operatorId = useCall<AccountId>(api.query.operator?.contractHasOperator, [address.toString()]);
 
   if (!address || !abi) {
     return null;

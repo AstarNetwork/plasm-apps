@@ -16,11 +16,10 @@ function App({ className }: Props): React.ReactElement {
   const fees = useCall(isApiReady ? api.derive.balances?.fees : undefined, []);
   const indexes = useCall(isApiReady ? api.derive.accounts?.indexes : undefined, []);
   const registrars = useCall(isApiReady ? api.query.identity?.registrars : undefined, []);
-  const staking = useCall(isApiReady ? api.derive.staking?.overview : undefined, []);
   const [, setHasValues] = useState(false);
 
   useEffect((): void => {
-    setHasValues(!!fees || !!indexes || !!registrars || !!staking);
+    setHasValues(!!fees || !!indexes || !!registrars);
   }, []);
 
   return (

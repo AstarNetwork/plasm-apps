@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AccountId, Balance } from "@polkadot/types/interfaces";
+import { AccountId, Balance, EraIndex } from "@polkadot/types/interfaces";
 import { ContractFilter } from "../types";
 import { StakingParameters } from "../../plasm";
 import { DerivedDappsStakingQuery } from "../../Api/derive/types";
+import { Option } from "@polkadot/types";
 
 import BN from "bn.js";
 import React, { useEffect, useState } from "react";
@@ -49,8 +50,8 @@ function Address({
   withNominations = true,
 }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  // FIXME Any horrors, caused by derive type mismatches
-  const stakingInfo = useCall<DerivedDappsStakingQuery>((api.derive as any).plasmStaking.query, [address]);
+  const currentEra = useCall<Option<EraIndex>>(api.query.plasmRewards.currentEra, [])?.unwrap()?.toNumber() ?? 0;
+  const stakingInfo = useCall<DerivedDappsStakingQuery>((api.derive as any).plasmStaking.query, [currentEra, address]);
   const [
     { operatorId, hasNominators, nominators, contractId, stakeTotal, contractParameters },
     setStakingState,
@@ -63,12 +64,14 @@ function Address({
 
   useEffect((): void => {
     if (stakingInfo) {
-      const { operatorId, stakers, contractId, contractParameters } = stakingInfo;
-      const nominators =
-        withNominations && stakers
-          ? stakers.others.map(({ who, value }): [AccountId, Balance] => [who, value.unwrap()])
-          : [];
-      const stakeTotal = (stakers && !stakers.total.isEmpty && stakers.total.unwrap()) || undefined;
+      const { operatorId, stakingPoints, contractId, contractParameters } = stakingInfo;
+      const nominators: [AccountId, Balance][] = [];
+      if (withNominations) {
+        stakingPoints?.individual.forEach((bonded, who) => {
+          nominators.push([who, bonded]);
+        });
+      }
+      const stakeTotal = stakingPoints?.total;
 
       setStakingState({
         hasNominators: nominators.length !== 0,

@@ -1,5 +1,5 @@
 import { SubmittableExtrinsic } from "@polkadot/api/promise/types";
-import { I18nProps } from "@polkadot/react-components/types";
+import { Props as BaseProps } from "../../types";
 
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -59,7 +59,7 @@ const Candidates = styled.div`
   }
 `;
 
-interface Props extends I18nProps {
+interface Props extends BaseProps {
   className?: string;
   onClose: () => void;
   recipientId?: string;
@@ -71,7 +71,6 @@ function ChangeOperator({
   onClose,
   recipientId: propRecipientId,
   senderId: propSenderId,
-  t,
 }: Props): React.ReactElement<Props> {
   const { api } = useApi();
   const [extrinsic, setExtrinsic] = useState<SubmittableExtrinsic | null>(null);
@@ -86,6 +85,7 @@ function ChangeOperator({
   const onChangeOperator = (accountId: string | null): void => {
     setSenderId(accountId);
     if (accountId) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       api.query.operator.operatorHasContracts<AccountId[] & Codec>(accountId as any).then((contracts): void => {
         const contractList: string[] = contracts.map((c): string => c.toString());
         setContracts(contractList);
@@ -121,18 +121,18 @@ function ChangeOperator({
     }
   }, [selects, recipientId, senderId]);
 
-  const transferrable = <span className="label">{t("transferrable")}</span>;
+  const transferrable = <span className="label">{"transferrable"}</span>;
 
   return (
     <Modal className="app--accounts-Modal" dimmer="inverted" open>
-      <Modal.Header>{t("Change operator")}</Modal.Header>
+      <Modal.Header>{"Change operator"}</Modal.Header>
       <Modal.Content>
         <div className={className}>
           <InputAddress
             defaultValue={propSenderId}
-            help={t("The account you will change operator authorship.")}
+            help={"The account you will change operator authorship."}
             isDisabled={!!propSenderId}
-            label={t("change from account")}
+            label={"change from account"}
             labelExtra={<Available label={transferrable} params={senderId} />}
             onChange={onChangeOperator}
             type="account"
@@ -149,7 +149,7 @@ function ChangeOperator({
                     value={contractId}
                   >
                     <div className="candidate-right">
-                      <Toggle label={isAye ? t("Aye") : t("Nay")} onChange={onChangeContracts(key)} value={isAye} />
+                      <Toggle label={isAye ? "Aye" : "Nay"} onChange={onChangeContracts(key)} value={isAye} />
                     </div>
                   </AddressMini>
                 );
@@ -159,8 +159,8 @@ function ChangeOperator({
           <InputAddress
             defaultValue={propRecipientId}
             isDisabled={!!propRecipientId}
-            help={t("Select a the operator address you want to change to.")}
-            label={t("new operator address")}
+            help={"Select a the operator address you want to change to."}
+            label={"new operator address"}
             labelExtra={<Available label={transferrable} params={recipientId} />}
             onChange={setRecipientId}
             type="allPlus"
@@ -174,7 +174,7 @@ function ChangeOperator({
           icon="send"
           isDisabled={!hasAvailable}
           isPrimary
-          label={t("ChangeOperator")}
+          label={"ChangeOperator"}
           onStart={onClose}
           withSpinner
         />

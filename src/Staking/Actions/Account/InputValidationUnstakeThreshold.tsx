@@ -12,7 +12,7 @@ function InputValidationUnstakeThreshold({ onError, unstakeThreshold }: Props): 
 
   useEffect((): void => {
     if (unstakeThreshold) {
-      let newError = null;
+      let newError;
 
       if (unstakeThreshold.ltn(0)) {
         newError = "The Threshold must be a positive number";

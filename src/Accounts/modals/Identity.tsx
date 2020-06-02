@@ -44,6 +44,7 @@ function WrapToggle({ children, onChange, value }: WrapProps): React.ReactElemen
 function Identity({ address, className, onClose }: Props): React.ReactElement<Props> {
   const { api } = useApi();
   const identityOpt = useCall<Option<Registration>>(api.query.identity.identityOf, [address]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [info, setInfo] = useState<any>({});
   const [hasEmail, setHasEmail] = useState(false);
   const [hasLegal, setHasLegal] = useState(false);
