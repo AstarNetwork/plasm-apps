@@ -24,9 +24,9 @@ function ClaimForNominator({ className, isVisible }: Props): React.ReactElement<
   const [isModalOpen, setIsModalOpen] = useState(false);
   const _toggleModal = (): void => setIsModalOpen(!isModalOpen);
 
-  // [n, m]
+  // [n, m)
   const range = (n, m): number[] => {
-    return n > m ? [] : [n].concat(range(n + 1, m));
+    return n >= m ? [] : [n].concat(range(n + 1, m));
   };
   const oldestEra = Math.max(0, currentEra - historyDepth);
   const eraOptions = range(oldestEra, currentEra).map((era) => {
