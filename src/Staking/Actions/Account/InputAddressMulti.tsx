@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Grid } from "semantic-ui-react";
 import { useDebounce } from "@polkadot/react-hooks";
-import { AddressToggle, Input, InputNumber } from "@polkadot/react-components";
+import { AddressToggle, Input, InputBalance } from "@polkadot/react-components";
 import BN from "bn.js";
 
 interface Props {
@@ -66,7 +66,7 @@ function InputAddressMulti({
                   />
                 </Grid.Column>
                 <Grid.Column>
-                  <InputNumber
+                  <InputBalance
                     label="value"
                     onChange={(value?: BN): void => {
                       setValues(new Map(values.set(key, value ?? new BN(0))));
