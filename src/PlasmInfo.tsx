@@ -7,6 +7,7 @@ import { useApi, useCall } from "@polkadot/react-hooks";
 
 import { Props } from "./types";
 import PlasmImage from "../public/plasm.png";
+import DustyImage from "../public/dusty.png";
 
 function storageVersion(api: ApiPromise): string | null {
   const version = useCall(api.query.plasmRewards.storageVersion, []);
@@ -24,7 +25,11 @@ function PlasmInfo({ className }: Props): React.ReactElement {
 
   return (
     <div className={className}>
-      <Image src={PlasmImage} alt="plasm-network" className="plasm-logo" />
+      {process.env.TARGET === "dusty" ? (
+        <Image src={DustyImage} alt="plasm-network" className="plasm-logo" />
+      ) : (
+        <Image src={PlasmImage} alt="plasm-network" className="plasm-logo" />
+      )}
       <span className="title">
         <Link id="plasm-name" to="/">
           Plasm Network

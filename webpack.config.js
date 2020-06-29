@@ -75,6 +75,7 @@ module.exports = {
             ? "wss://rpc.dusty.plasmnet.io/"
             : "ws://127.0.0.1:9944"
         ),
+        TARGET: JSON.stringify(TARGET),
       },
     }),
     new CopyWebpackPlugin([{ from: "public" }]),
