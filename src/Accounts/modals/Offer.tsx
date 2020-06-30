@@ -18,7 +18,6 @@ import { Available } from "@polkadot/react-query";
 import { Vec } from "@polkadot/types";
 
 import AccountId from "@polkadot/types/generic/AccountId";
-import { Codec } from "@polkadot/types/types";
 
 const Candidates = styled.div`
   display: flex;
@@ -92,7 +91,7 @@ function Offer({ className, onClose, senderId: propSenderId, buyerId: propBuyerI
     setSenderId(accountId);
     if (accountId) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      api.query.operator.operatorHasContracts<AccountId[] & Codec>(accountId as any).then((contracts): void => {
+      api.query.operator.operatorHasContracts<any>(accountId as any).then((contracts): void => {
         const contractList: string[] = contracts.map((c): string => c.toString());
         setContracts(contractList);
         setSelects(
