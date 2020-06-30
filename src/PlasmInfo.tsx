@@ -2,34 +2,23 @@ import React from "react";
 import styled from "styled-components";
 import { Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import { ApiPromise } from "@polkadot/api";
-import { useApi, useCall } from "@polkadot/react-hooks";
 
 import { Props } from "./types";
 import PlasmImage from "../public/plasm.png";
-
-function storageVersion(api: ApiPromise): string | null {
-  const version = useCall(api.query.plasmRewards.storageVersion, []);
-  let result = "";
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if ((version as any)?.isV100) {
-    result = "v1.0.0";
-  }
-  return result;
-}
+import DustyImage from "../public/dusty.png";
 
 function PlasmInfo({ className }: Props): React.ReactElement {
-  const { api } = useApi();
-  const version = storageVersion(api);
-
   return (
     <div className={className}>
-      <Image src={PlasmImage} alt="plasm-network" className="plasm-logo" />
+      {process.env.TARGET === "dusty" ? (
+        <Image src={DustyImage} alt="dusty-network" className="logo" />
+      ) : (
+        <Image src={PlasmImage} alt="plasm-network" className="logo" />
+      )}
       <span className="title">
         <Link id="plasm-name" to="/">
-          Plasm Network
+          {process.env.TARGET === "dusty" ? "Dusty Network" : "Plasm Network"}
         </Link>
-        <span id="plasm-version">{version ?? ""}</span>
       </span>
     </div>
   );
@@ -42,27 +31,19 @@ export default styled(PlasmInfo)`
   align-items: center;
   margin-top: 1.5rem;
 
-  .plasm-logo {
+  .logo {
     height: 30px;
     margin: 0.5rem;
   }
 
   .title {
-    display: flex;
-    flex-direction: column;
+    display: table-cell;
+    vertical-align: middle;
     width: 100%;
-    height: auto;
-    margin: 0.5rem 0.5rem 0 0;
   }
 
   #plasm-name {
     color: #fff;
     white-space: nowrap;
-  }
-
-  #plasm-version {
-    color: #aaa;
-    font-size: 0.8rem;
-    text-align: right;
   }
 `;

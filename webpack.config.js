@@ -75,6 +75,7 @@ module.exports = {
             ? "wss://rpc.dusty.plasmnet.io/"
             : "ws://127.0.0.1:9944"
         ),
+        TARGET: JSON.stringify(TARGET),
       },
     }),
     new CopyWebpackPlugin([{ from: "public" }]),
@@ -82,7 +83,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       template: "public/index.html",
-      PAGE_TITLE: "Plasm Network Portal",
+      favicon: TARGET === "dusty" ? "public/dusty.favicon.ico" : "public/plasm.favicon.ico",
+      PAGE_TITLE: TARGET === "dusty" ? "Dusty Network Portal" : "Plasm Network Portal",
     }),
     isProduction
       ? null
