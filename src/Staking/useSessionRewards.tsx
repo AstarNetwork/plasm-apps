@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Balance, EventRecord, Hash, Header, StorageChangeSet } from "@polkadot/types/interfaces";
+import { Balance, EventRecord, BlockHash, Header, StorageChangeSet, H256 } from "@polkadot/types/interfaces";
 import { Slash, SessionRewards } from "./types";
 
 import BN from "bn.js";
@@ -102,7 +102,7 @@ function mergeResults(sessions: SessionRewards[], newSessions: SessionRewards[])
   return tmp.filter(({ sessionIndex }, index): boolean => index === 0 || !tmp[index - 1].sessionIndex.eq(sessionIndex));
 }
 
-async function loadSome(api: ApiPromise, fromHash: Hash, toHash: Hash): Promise<SessionRewards[]> {
+async function loadSome(api: ApiPromise, fromHash: BlockHash, toHash: H256): Promise<SessionRewards[]> {
   // query a range of blocks - on non-archive nodes this will fail, so return an empty set
   const results: any = await api.rpc.state
     .queryStorage([api.query.session.currentIndex.key()], fromHash, toHash)
