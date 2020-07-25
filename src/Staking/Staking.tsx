@@ -16,6 +16,7 @@ import { MAX_SESSIONS } from "./constants";
 import useSessionRewards from "./useSessionRewards";
 import ClaimForNominator from "./ClaimForNominator";
 import ClaimForOperator from "./ClaimForOperator";
+import CommunityRewards from "./CommunityRewards/CommunityRewards";
 
 function Staking({ basePath, className }: Props): React.ReactElement<Props> {
   const { api } = useApi();
@@ -70,6 +71,10 @@ function Staking({ basePath, className }: Props): React.ReactElement<Props> {
               text: "Account actions",
             },
             {
+              name: "community-rewards",
+              text: "Community Rewards",
+            },
+            {
               name: "claim-for-nominator",
               text: "Claim for Nominator",
             },
@@ -90,6 +95,12 @@ function Staking({ basePath, className }: Props): React.ReactElement<Props> {
       <Overview
         hasQueries={hasQueries}
         isVisible={[basePath, `${basePath}/waiting`].includes(pathname)}
+        allContracts={allContractIds}
+        electedContracts={stakedContracts ?? []}
+      />
+      <CommunityRewards
+        hasQueries={hasQueries}
+        isVisible={pathname === `${basePath}/community-rewards`}
         allContracts={allContractIds}
         electedContracts={stakedContracts ?? []}
       />

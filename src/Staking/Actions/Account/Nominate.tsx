@@ -9,11 +9,12 @@ import { STORE_FAVS_BASE } from "../../constants";
 import InputAddressMulti from "./InputAddressMulti";
 
 interface Props extends BaseProps {
-  controllerId: string;
+  controllerId?: string;
   nominees?: string[];
   onClose: () => void;
   allContracts?: string[];
-  stashId: string;
+  stashId?: string;
+  contract?: string;
 }
 
 const MAX_NOMINEES = 16;
@@ -25,12 +26,15 @@ function Nominate({
   onClose,
   allContracts,
   stashId,
+  contract,
 }: Props): React.ReactElement<Props> | null {
   const [favorites] = useFavorites(STORE_FAVS_BASE);
   const [contracts, setContracts] = useState<string[]>([]);
   const [selection, setSelection] = useState<string[]>([]);
   const [nominateValues, setNominateValues] = useState<Map<string, BN>>(new Map());
   const [available, setAvailable] = useState<string[]>([]);
+
+  const [fixedControllerId, setControllerId] = useState<string>(controllerId ?? "");
 
   useEffect((): void => {
     if (!selection.length && nominees) {
@@ -64,8 +68,16 @@ function Nominate({
   return (
     <Modal className={`staking--Nominating ${className}`} header={"Nominate Contracts"} open>
       <Modal.Content className="ui--signer-Signer-Content">
-        <InputAddress className="medium" defaultValue={controllerId} isDisabled label={"controller account"} />
-        <InputAddress className="medium" defaultValue={stashId} isDisabled label={"stash account"} />
+        <InputAddress
+          className="medium"
+          defaultValue={controllerId}
+          isDisabled={!!controllerId}
+          label={"controller account"}
+          onChange={(value: string | null): void => {
+            setControllerId(value ?? "");
+          }}
+        />
+        {/* <InputAddress className="medium" defaultValue={stashId} isDisabled={!!stashId} label={"stash account"} /> */}
         <InputAddressMulti
           available={available}
           className="medium"
@@ -77,11 +89,12 @@ function Nominate({
             setNominateValues(value[1]);
           }}
           value={[selection, new Map()]}
+          contract={contract}
         />
       </Modal.Content>
       <Modal.Actions onCancel={onClose}>
         <TxButton
-          accountId={controllerId}
+          accountId={fixedControllerId}
           isDisabled={!selection.length}
           isPrimary
           onClick={onClose}
