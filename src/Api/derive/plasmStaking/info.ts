@@ -17,18 +17,16 @@ function createDerivedLatest(
   [
     [hasBabe, epochDuration, sessionsPerEra],
     { currentIndex, currentEra, validatorCount },
-    [currentSlot, epochIndex, epochOrGenesisStartSlot, currentEraStartSessionIndex],
+    [currentSlot, epochIndex, epochOrGenesisStartSlot],
   ]: Result
 ): Partial<DeriveSessionProgress> {
   const epochStartSlot = epochIndex.mul(epochDuration).add(epochOrGenesisStartSlot);
   const sessionProgress = currentSlot.sub(epochStartSlot);
-  const eraProgress = currentIndex.sub(currentEraStartSessionIndex).mul(epochDuration).add(sessionProgress);
 
   return {
     currentEra,
     currentIndex,
     eraLength: createType(api.registry, "BlockNumber", sessionsPerEra.mul(epochDuration)),
-    eraProgress: createType(api.registry, "BlockNumber", eraProgress),
     isEpoch: hasBabe,
     sessionLength: epochDuration,
     sessionsPerEra,
@@ -40,12 +38,7 @@ function createDerivedLatest(
 function infoLatestBabe(api: ApiInterfaceRx): Observable<Partial<DeriveSessionProgress>> {
   return combineLatest([
     api.derive.session.indexes(),
-    api.queryMulti<ResultSlots>([
-      api.query.babe.currentSlot,
-      api.query.babe.epochIndex,
-      api.query.babe.genesisSlot,
-      api.query.plasmStaking.currentEraStartSessionIndex,
-    ]),
+    api.queryMulti<ResultSlots>([api.query.babe.currentSlot, api.query.babe.epochIndex, api.query.babe.genesisSlot]),
   ]).pipe(
     map(
       ([indexes, slots]: [DeriveSessionIndexes, ResultSlots]): Partial<DeriveSessionProgress> =>

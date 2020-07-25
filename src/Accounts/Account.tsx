@@ -6,7 +6,6 @@ import React, { useState, useEffect } from "react";
 import { Label } from "semantic-ui-react";
 import styled from "styled-components";
 import {
-  AddressInfo,
   AddressSmall,
   Badge,
   Button,
@@ -25,6 +24,7 @@ import { Option } from "@polkadot/types";
 import keyring from "@polkadot/ui-keyring";
 import { formatBalance, formatNumber } from "@polkadot/util";
 
+import AddressInfo from "./AddressInfo";
 import Backup from "./modals/Backup";
 import ChangePass from "./modals/ChangePass";
 import Derive from "./modals/Derive";

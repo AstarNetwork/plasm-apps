@@ -7,9 +7,10 @@ import { Props as BaseProps } from "../../../types";
 
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { AddressInfo, AddressMini, AddressSmall, Button, Menu, Popup, TxButton } from "@polkadot/react-components";
+import { AddressMini, AddressSmall, Button, Menu, Popup, TxButton } from "@polkadot/react-components";
 import { useApi, useCall, useToggle } from "@polkadot/react-hooks";
 
+import AddressInfo from "../../../Accounts/AddressInfo";
 import BondExtra from "./BondExtra";
 import Nominate from "./Nominate";
 import SetControllerAccount from "./SetControllerAccount";
