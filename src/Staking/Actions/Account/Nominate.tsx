@@ -25,7 +25,6 @@ function Nominate({
   nominees,
   onClose,
   allContracts,
-  stashId,
   contract,
 }: Props): React.ReactElement<Props> | null {
   const [favorites] = useFavorites(STORE_FAVS_BASE);
