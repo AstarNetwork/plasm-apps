@@ -1,3 +1,3 @@
-import { StakingParameters, OfferState, OfferOf, types } from "./types";
+import { StakingParameters, OfferState, OfferOf } from "./types";
 
-export { StakingParameters, OfferState, OfferOf, types };
+export { StakingParameters, OfferState, OfferOf };
