@@ -1,4 +1,5 @@
 import { ApiState } from "@polkadot/react-api/types";
+import * as plasmDefinitions from "@plasm/types/interfaces/definitions";
 
 import React, { useContext, useEffect, useState } from "react";
 import ApiPromise from "@polkadot/api/promise";
@@ -18,8 +19,6 @@ import typesSpec from "./spec";
 import derive from "./derive";
 import ApiContext from "@polkadot/react-api/ApiContext";
 import registry from "@polkadot/react-api/typeRegistry";
-
-import { types } from "../plasm";
 
 interface Props {
   children: React.ReactNode;
@@ -114,6 +113,8 @@ export default function Api({ children, url }: Props): React.ReactElement<Props>
   const [isApiConnected, setIsApiConnected] = useState(false);
   const [isWaitingInjected, setIsWaitingInjected] = useState(isWeb3Injected);
   const [isInitialized, setIsInitialized] = useState(false);
+
+  const types = Object.values(plasmDefinitions).reduce((res, { types }): object => ({ ...res, ...types }), {});
 
   // initial initialization
   useEffect((): void => {

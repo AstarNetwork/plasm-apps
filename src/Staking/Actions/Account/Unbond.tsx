@@ -6,16 +6,10 @@ import BN from "bn.js";
 import React from "react";
 import styled from "styled-components";
 import { Option } from "@polkadot/types";
-import {
-  AddressInfo,
-  Button,
-  InputAddress,
-  InputBalance,
-  Modal,
-  TxButton,
-  TxComponent,
-} from "@polkadot/react-components";
+import { Button, InputAddress, InputBalance, Modal, TxButton, TxComponent } from "@polkadot/react-components";
 import { withCalls, withApi, withMulti } from "@polkadot/react-api/hoc";
+
+import AddressInfo from "../../../Accounts/AddressInfo";
 
 interface Props extends ApiProps {
   controllerId?: AccountId | null;

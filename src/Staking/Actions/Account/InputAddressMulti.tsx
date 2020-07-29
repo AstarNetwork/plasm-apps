@@ -13,6 +13,7 @@ interface Props {
   maxCount: number;
   onChange: (values: [string[], Map<string, BN>]) => void;
   value: [string[], Map<string, BN>];
+  contract?: string;
 }
 
 function InputAddressMulti({
@@ -23,6 +24,7 @@ function InputAddressMulti({
   maxCount,
   onChange,
   value,
+  contract,
 }: Props): React.ReactElement<Props> {
   const [_filter, setFilter] = useState<string>("");
   const filter = useDebounce(_filter);
@@ -41,19 +43,23 @@ function InputAddressMulti({
     onChange([newValues, values]);
   };
 
+  const contracts = contract ? [contract] : available;
+
   return (
     <div className={`ui--InputAddressMulti ${className}`}>
-      <Input
-        autoFocus
-        className="ui--InputAddressMulti-Input"
-        help={help}
-        label={label}
-        onChange={setFilter}
-        placeholder={"partial name, address or account index"}
-        value={_filter}
-      />
+      {!contract && (
+        <Input
+          autoFocus
+          className="ui--InputAddressMulti-Input"
+          help={help}
+          label={label}
+          onChange={setFilter}
+          placeholder={"partial name, address or account index"}
+          value={_filter}
+        />
+      )}
       <div className="ui--InputAddressMulti-container">
-        {available.map(
+        {contracts.map(
           (key): React.ReactNode => (
             <div key={key}>
               <Grid columns="equal">
