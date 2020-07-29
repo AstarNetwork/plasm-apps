@@ -1,5 +1,5 @@
 import { ApiState } from "@polkadot/react-api/types";
-import * as plasmDefinitions from "plasm-types/interfaces/definitions";
+import * as plasmDefinitions from "@plasm/types/interfaces/definitions";
 
 import React, { useContext, useEffect, useState } from "react";
 import ApiPromise from "@polkadot/api/promise";
