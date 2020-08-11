@@ -72,7 +72,7 @@ function Contract({ address, onClick, updateTotal }: ContractProps): React.React
         <AddressMini className="mini-nopad" label={"operator"} value={operatorId} />
       </td>
       <td>
-        <label>{"total staked"}</label>
+        <label>{"total stake"}</label>
         {totalStaked.toString()}
       </td>
       <td>
