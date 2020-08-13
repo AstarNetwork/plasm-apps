@@ -71,7 +71,7 @@ function Summary({
   return (
     <SummaryBox className={`${className} ${!isVisible && "staking--hidden"}`}>
       <section className="ui--media-small">
-        <CardSummary label={"total staked"}>{staked || "-"}</CardSummary>
+        <CardSummary label={"total stake"}>{staked || "-"}</CardSummary>
         <CardSummary label="">/</CardSummary>
         <CardSummary label={"total issuance"}>{total || "-"}</CardSummary>
       </section>
