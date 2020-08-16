@@ -68,7 +68,7 @@ function Staking({ basePath, className }: Props): React.ReactElement<Props> {
             },
             {
               name: "actions",
-              text: "Bonding",
+              text: "Bond / Nominate",
             },
             {
               name: "community-rewards",

@@ -27,7 +27,11 @@ export default function CommunityRewards({
 
   return (
     <div className={`${className} ${!isVisible && "staking--hidden"}`}>
-      <Header as="h2">Staking Rank of Contracts</Header>
+      <Header as="h2">Stakings of Contracts</Header>
+      <p>
+        Please bond your account at <b>Bond/Nominate</b> tab to nominate. Your nomination will be added from the next
+        era.
+      </p>
       <ContractList
         authorsMap={byAuthor}
         hasQueries={hasQueries}

@@ -66,7 +66,7 @@ function Actions({ allContracts, className, isVisible }: Props): React.ReactElem
   return (
     <div className={`${className} ${!isVisible && "staking--hidden"}`}>
       <Button.Group>
-        <Button isPrimary key="new-stake" label={"Add Bond Settings"} icon="add" onClick={_toggleNewStake} />
+        <Button isPrimary key="new-stake" label={"Add Bonding Settings"} icon="add" onClick={_toggleNewStake} />
       </Button.Group>
       {isNewStakeOpen && <StartStaking onClose={_toggleNewStake} />}
       {foundStashes?.length ? (
