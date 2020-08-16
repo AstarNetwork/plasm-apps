@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AccountId, EraIndex } from "@polkadot/types/interfaces";
-import { Option } from "@polkadot/types";
+import { Option, u32 } from "@polkadot/types";
 import { DerivedDappsStakingQuery } from "../../Api/derive/types";
 
 import BN from "bn.js";
 import React, { useEffect, useState } from "react";
 import { Table, AddressMini, AddressSmall, Button } from "@polkadot/react-components";
 import { useToggle, useApi, useCall } from "@polkadot/react-hooks";
+import { FormatBalance } from "@polkadot/react-query";
 
 import Nominate from "../Actions/Account/Nominate";
 
@@ -29,7 +30,6 @@ interface ContractProps {
 interface StakingState {
   contractId: string;
   operatorId: string;
-  totalStaked: BN;
 }
 
 function sortedContracts(allContracts: string[], totals: Map<string, BN>): string[] {
@@ -42,23 +42,40 @@ function sortedContracts(allContracts: string[], totals: Map<string, BN>): strin
 
 function Contract({ address, onClick, updateTotal }: ContractProps): React.ReactElement {
   const { api } = useApi();
+  const historyDepth = useCall<u32>(api.query.plasmRewards.historyDepth, [])?.toNumber() ?? 1;
   const currentEra = useCall<Option<EraIndex>>(api.query.plasmRewards.currentEra, [])?.unwrap()?.toNumber() ?? 0;
+  const oldestEra: number = Math.max(0, currentEra - historyDepth);
+
+  const [era, setEra] = useState<number>(currentEra);
+  if (era === 0 && currentEra !== 0) {
+    setEra(currentEra);
+  }
+  const [total, setTotal] = useState<BN>(new BN(0));
+  useEffect((): void => {
+    (async (): Promise<any> => {
+      await api.query.dappsStaking.erasStakingPoints<any>(era, address).then((info: any) => {
+        const newTotal = new BN(total).add(info?.total);
+        setTotal(newTotal);
+        updateTotal(newTotal);
+        if (era > oldestEra && era != 1) {
+          setEra(era - 1);
+        }
+      });
+    })();
+  }, [era]);
+
   const stakingInfo = useCall<DerivedDappsStakingQuery>((api.derive as any).plasmStaking.query, [currentEra, address]);
-  const [{ contractId, operatorId, totalStaked }, setStakingState] = useState<StakingState>({
+  const [{ contractId, operatorId }, setStakingState] = useState<StakingState>({
     contractId: address.toString(),
     operatorId: "",
-    totalStaked: new BN(0),
   });
-
-  updateTotal(contractId, totalStaked);
 
   useEffect((): void => {
     if (stakingInfo) {
-      const { operatorId, stakingPoints, contractId } = stakingInfo;
+      const { operatorId, contractId } = stakingInfo;
       setStakingState({
         operatorId: operatorId?.toString() ?? "",
         contractId: contractId?.toString() ?? "",
-        totalStaked: stakingPoints?.total ?? new BN(0),
       });
     }
   }, [stakingInfo]);
@@ -73,7 +90,7 @@ function Contract({ address, onClick, updateTotal }: ContractProps): React.React
       </td>
       <td>
         <label>{"total stake"}</label>
-        {totalStaked.toString()}
+        <FormatBalance value={total as any} />
       </td>
       <td>
         <Button isPrimary key="nominate" onClick={onClick(contractId)} label={"Nominate"} icon="hand paper outline" />
@@ -96,10 +113,10 @@ function ContractList({ isIntentions, isVisible, allContracts }: Props): React.R
     }
   }, [allContracts, totals, isVisible]);
 
-  const _updateTotal = (contract: string, totalStaked: BN): void => {
+  const _updateTotal = (contract: string, totalStake: BN): void => {
     const total = totals.get(contract);
-    if (!total || !total.eq(totalStaked)) {
-      setTotals(new Map(totals.set(contract, totalStaked)));
+    if (!total || !total.eq(totalStake)) {
+      setTotals(new Map(totals.set(contract, totalStake)));
     }
   };
 

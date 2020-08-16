@@ -64,11 +64,11 @@ function Staking({ basePath, className }: Props): React.ReactElement<Props> {
             {
               isRoot: true,
               name: "overview",
-              text: "Staking overview",
+              text: "Staking Overview",
             },
             {
               name: "actions",
-              text: "Account actions",
+              text: "Bond / Nominate",
             },
             {
               name: "community-rewards",

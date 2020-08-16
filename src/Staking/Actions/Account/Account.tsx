@@ -131,7 +131,7 @@ function Account({ allContracts, className, onUpdateType, stashId }: Props): Rea
         <td>
           {isStashNominating && nominees && (
             <details>
-              <summary>{`Nominating (${nominees.length})`}</summary>
+              <summary>{`nominating (${nominees.length})`}</summary>
               {nominees.map((nomineeId, index) => (
                 <AddressMini key={index} value={nomineeId} withBalance={false} />
               ))}
