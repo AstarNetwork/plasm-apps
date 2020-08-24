@@ -179,7 +179,7 @@ export default function useSessionRewards(maxSessions: number): SessionRewards[]
       api.isReady.then(
         async (): Promise<void> => {
           const maxSessionsStore = maxSessions + 1; // assuming first is a bust
-          const bestHeader = await api.rpc.chain.getHeader();
+          const bestHeader: any = await api.rpc.chain.getHeader();
           let toHash = bestHeader.hash;
           let toNumber = bestHeader.number.unwrap().toBn();
           let fromNumber = bnMax(toNumber.subn(MAX_BLOCKS), new BN(1));

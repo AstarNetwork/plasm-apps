@@ -1,7 +1,6 @@
 import { CodeStored } from "../types";
 
 import React from "react";
-import styled from "styled-components";
 import { RouteComponentProps } from "react-router";
 import { withRouter } from "react-router-dom";
 import { Button, Card, CodeRow, Forget } from "@polkadot/react-components";
@@ -21,13 +20,6 @@ interface State {
   isForgetOpen: boolean;
   isRemoveABIOpen: boolean;
 }
-
-const CodeCard = styled(Card)`
-  && {
-    max-width: 100%;
-    min-width: 100%;
-  }
-`;
 
 class Code extends React.PureComponent<Props, State> {
   public state: State = {
@@ -53,7 +45,7 @@ class Code extends React.PureComponent<Props, State> {
     );
 
     return (
-      <CodeCard>
+      <Card>
         {this.renderModals()}
         <CodeRow buttons={this.renderButtons()} code={code} isEditable withTags>
           {contractAbi ? (
@@ -65,7 +57,7 @@ class Code extends React.PureComponent<Props, State> {
             abi
           )}
         </CodeRow>
-      </CodeCard>
+      </Card>
     );
   }
 
@@ -105,7 +97,8 @@ class Code extends React.PureComponent<Props, State> {
     if (isForgetOpen) {
       modals.push(
         <Forget
-          code={code}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          code={code as any}
           key="modal-forget-account"
           mode="code"
           onClose={this.toggleForget}

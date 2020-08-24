@@ -6,8 +6,6 @@ import { map } from "rxjs/operators";
 import { ApiInterfaceRx } from "@polkadot/api/types";
 import { u64, createType } from "@polkadot/types";
 
-import { memo } from "@polkadot/api-derive/util/memo";
-
 type ResultSlots = [u64, u64, u64, SessionIndex];
 type ResultType = [boolean, u64, SessionIndex];
 type Result = [ResultType, DeriveSessionIndexes, ResultSlots];
@@ -57,5 +55,5 @@ function infoLatestBabe(api: ApiInterfaceRx): Observable<Partial<DeriveSessionPr
  */
 export function info(api: ApiInterfaceRx): () => Observable<Partial<DeriveSessionProgress>> {
   const query = infoLatestBabe;
-  return memo((): Observable<Partial<DeriveSessionProgress>> => query(api));
+  return (): Observable<Partial<DeriveSessionProgress>> => query(api);
 }

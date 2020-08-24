@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApiState } from "@polkadot/react-api/types";
 import * as plasmDefinitions from "@plasm/types/interfaces/definitions";
 
@@ -46,10 +47,10 @@ export { api };
 
 async function loadOnReady(api: ApiPromise): Promise<State> {
   const [properties, _systemChain, _systemName, _systemVersion, injectedAccounts] = await Promise.all([
-    api.rpc.system.properties(),
-    api.rpc.system.chain(),
-    api.rpc.system.name(),
-    api.rpc.system.version(),
+    api.rpc.system.properties() as any,
+    api.rpc.system.chain() as any,
+    api.rpc.system.name() as any,
+    api.rpc.system.version() as any,
     web3Accounts().then((accounts): InjectedAccountExt[] =>
       accounts.map(
         ({ address, meta }): InjectedAccountExt => ({
@@ -128,7 +129,7 @@ export default function Api({ children, url }: Props): React.ReactElement<Props>
       typesChain,
       typesSpec,
       types: types,
-      derives: derive,
+      derives: derive as any,
     });
 
     api.on("connected", (): void => setIsApiConnected(true));

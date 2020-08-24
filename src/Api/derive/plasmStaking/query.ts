@@ -9,7 +9,6 @@ import { combineLatest, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { createType, Option } from "@polkadot/types";
 
-import { memo } from "@polkadot/api-derive/util/memo";
 import { EraStakingPoints } from "../../../plasm/types";
 
 interface ParseInput {
@@ -57,10 +56,10 @@ function retrieve(api: ApiInterfaceRx, era: any, contractId: AccountId): Observa
 /**
  * @description From a stash, retrieve the controllerId and fill in all the relevant staking details
  */
-export function query(api: ApiInterfaceRx): (_accountId: Uint8Array | string) => Observable<DerivedDappsStakingQuery> {
-  return memo(
-    (era: any, accountId: Uint8Array | string): Observable<DerivedDappsStakingQuery> => {
-      return retrieve(api, era, createType(api.registry, "AccountId", accountId));
-    }
-  );
+export function query(
+  api: ApiInterfaceRx
+): (era: any, _accountId: Uint8Array | string) => Observable<DerivedDappsStakingQuery> {
+  return (era: any, accountId: Uint8Array | string): Observable<DerivedDappsStakingQuery> => {
+    return retrieve(api, era, createType(api.registry, "AccountId", accountId));
+  };
 }

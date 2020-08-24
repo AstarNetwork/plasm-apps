@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 
 import { ApiInterfaceRx } from "@polkadot/api/types";
@@ -23,8 +24,6 @@ import { combineLatest, Observable, of } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 
 import { isUndefined } from "@polkadot/util";
-
-import { memo } from "@polkadot/api-derive/util/memo";
 
 // groups the supplied chunks by era, i.e. { [era]: BN(total of values) }
 function groupByEra(list: UnlockChunk[]): Record<string, BN> {
@@ -149,7 +148,7 @@ function retrieveInfo(
   return (api.queryMulti([
     [api.query.dappsStaking.payee, stashId],
     [api.query.dappsStaking.ledger, controllerId],
-  ]) as Observable<MultiResultV2>).pipe(
+  ]) as any).pipe(
     map(
       ([rewardDestination, stakingLedger]: MultiResultV2): DeriveStakingQuery =>
         parseResultInfo({ accountId, controllerId, stashId, stakingLedger, rewardDestination })
@@ -162,28 +161,26 @@ function retrieveQuery(api: ApiInterfaceRx, stashId: AccountId): Observable<Deri
     .bonded<Option<AccountId>>(stashId)
     .pipe(
       switchMap(
-        (controllerId): Observable<DeriveStakingQuery> =>
+        (controllerId: any): Observable<DeriveStakingQuery> =>
           controllerId.isSome
             ? retrieveInfo(api, stashId, stashId, controllerId.unwrap())
             : of({ accountId: stashId, nextSessionIds: [], sessionIds: [] })
-      )
-    );
+      ) as any
+    ) as any;
 }
 
 /**
  * @description From a stash, retrieve the controllerId and fill in all the relevant staking details
  */
 export function addressInfo(api: ApiInterfaceRx): (accountId: Uint8Array | string) => Observable<DeriveStakingAccount> {
-  return memo(
-    (accountId: Uint8Array | string): Observable<DeriveStakingAccount> =>
-      combineLatest([
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (api.derive as any).plasmStaking.info() as Observable<DeriveSessionProgress>,
-        retrieveQuery(api, createType(api.registry, "AccountId", accountId)),
-      ]).pipe(
-        map(([sessionProgress, query]: [DeriveSessionProgress, DeriveStakingQuery]) =>
-          parseResult(api, sessionProgress, query)
-        )
+  return (accountId: Uint8Array | string): Observable<DeriveStakingAccount> =>
+    combineLatest([
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (api.derive as any).plasmStaking.info() as Observable<DeriveSessionProgress>,
+      retrieveQuery(api, createType(api.registry, "AccountId", accountId)),
+    ]).pipe(
+      map(([sessionProgress, query]: [DeriveSessionProgress, DeriveStakingQuery]) =>
+        parseResult(api, sessionProgress, query)
       )
-  );
+    );
 }
