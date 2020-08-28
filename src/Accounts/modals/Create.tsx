@@ -278,6 +278,11 @@ function Create({
                   text: "Schnorrkel (sr25519)",
                   value: "sr25519",
                 },
+                {
+                  info: "ecdsa",
+                  text: "ECDSA (BTC/ETH compatible)",
+                  value: "ecdsa",
+                },
               ]}
             />
             <Input
