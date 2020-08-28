@@ -2,10 +2,17 @@ import React from "react";
 import { createType } from "@polkadot/types";
 import { registry } from "@polkadot/react-api";
 import { Button, Input } from "@polkadot/react-components";
+import { Abi } from "@polkadot/api-contract";
 
-import ContractModal, { ContractModalProps as Props, ContractModalState } from "../Modal";
+import ContractModal, { ContractModalProps, ContractModalState } from "../Modal";
 import ValidateCode from "./ValidateCode";
 import store from "../store";
+
+interface Props extends ContractModalProps {
+  codeHash?: string;
+  contractAbi?: Abi;
+  onSuccess?: () => void;
+}
 
 interface State extends ContractModalState {
   codeHash: string;
@@ -18,16 +25,23 @@ class Add extends ContractModal<Props, State> {
     super(props);
     this.defaultState = {
       ...this.defaultState,
-      codeHash: "",
+      codeHash: props.codeHash ?? "",
+      contractAbi: props.contractAbi,
       isBusy: false,
       isCodeValid: false,
     };
     this.state = this.defaultState;
     this.headerText = "Add an existing code hash";
+    if (props.onSuccess) {
+      this.onSuccess = props.onSuccess;
+    }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  protected onSuccess = (): void => {};
+
   protected renderContent = (): React.ReactNode => {
-    const { codeHash, isBusy, isCodeValid } = this.state;
+    const { codeHash, contractAbi, isBusy, isCodeValid } = this.state;
 
     return (
       <>
@@ -43,7 +57,7 @@ class Add extends ContractModal<Props, State> {
         />
         <ValidateCode codeHash={codeHash} onChange={this.onValidateCode} />
         {this.renderInputName()}
-        {this.renderInputAbi()}
+        {contractAbi ? this.renderInputAbi(contractAbi) : this.renderInputAbi()}
       </>
     );
   };
@@ -76,6 +90,7 @@ class Add extends ContractModal<Props, State> {
       store
         .saveCode(createType(registry, "Hash", codeHash), { abi, name, tags })
         .then((): void => {
+          this.onSuccess();
           this.setState({ isBusy: false }, (): void => this.onClose());
         })
         .catch((error): void => {

@@ -4,6 +4,7 @@ import { Abi } from "@polkadot/api-contract";
 import { Input, InputAddress, InputNumber, Modal, TxComponent } from "@polkadot/react-components";
 
 import ABI from "./ABI";
+import { PAPER_CONTRACT_ABI } from "../constants";
 
 export interface ContractModalProps {
   basePath: string;
@@ -58,8 +59,12 @@ class ContractModal<P extends ContractModalProps, S extends ContractModalState> 
 
   protected renderButtons: () => React.ReactNode | null = (): React.ReactNode => null;
 
-  protected renderInputAbi(): React.ReactNode {
+  protected renderInputAbi(contractAbi?: Abi): React.ReactNode {
     const { isBusy } = this.state;
+
+    if (contractAbi) {
+      this.onAddAbi(JSON.stringify(PAPER_CONTRACT_ABI), contractAbi);
+    }
 
     return (
       <ABI
@@ -72,6 +77,7 @@ class ContractModal<P extends ContractModalProps, S extends ContractModalState> 
         onChange={this.onAddAbi}
         isDisabled={isBusy}
         isRequired={this.isContract}
+        contractAbi={contractAbi}
       />
     );
   }
