@@ -7,7 +7,6 @@ import { Props } from "./types";
 import Accouunts from "./Accounts";
 import OPContract from "./OPContract/OPContract";
 import Operator from "./Operator/Operator";
-import Staking from "./Staking/Staking";
 import ChainState from "./ChainState";
 import Extrinsics from "./Extrinsics";
 import Explorer from "./Explorer";
@@ -27,9 +26,6 @@ function Content({ className }: Props): React.ReactElement {
         </Route>
         <Route path="/operator">
           <Operator basePath="/operator" onStatusChange={queueAction} />
-        </Route>
-        <Route path="/staking">
-          <Staking basePath="/staking" onStatusChange={queueAction} />
         </Route>
         <Route path="/explorer">
           <Explorer basePath="/explorer" onStatusChange={queueAction} />

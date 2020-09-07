@@ -24,10 +24,6 @@ function SidebarInner(): React.ReactElement {
         <i className="fas fa-th"></i>
         Operator
       </Menu.Item>
-      <Menu.Item as={Link} to="/staking">
-        <i className="fas fa-certificate"></i>
-        Staking
-      </Menu.Item>
       <div className="blank"></div>
       <Menu.Item as={Link} to="/explorer">
         <i className="fas fa-database"></i>
