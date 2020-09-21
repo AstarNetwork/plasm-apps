@@ -13,6 +13,7 @@ import { useApi, useCall, useToggle } from "@polkadot/react-hooks";
 import AddressInfo from "../../../Accounts/AddressInfo";
 import BondExtra from "./BondExtra";
 import Nominate from "./Nominate";
+import Vote from "./Vote";
 import SetControllerAccount from "./SetControllerAccount";
 import SetRewardDestination from "./SetRewardDestination";
 import Unbond from "./Unbond";
@@ -62,6 +63,7 @@ function Account({ allContracts, className, onUpdateType, stashId }: Props): Rea
   });
   const [isBondExtraOpen, toggleBondExtra] = useToggle();
   const [isNominateOpen, toggleNominate] = useToggle();
+  const [isVoteOpen, toggleVote] = useToggle();
   const [isRewardDestinationOpen, toggleRewardDestination] = useToggle();
   const [isSetControllerOpen, toggleSetController] = useToggle();
   const [isSettingsOpen, toggleSettings] = useToggle();
@@ -90,6 +92,15 @@ function Account({ allContracts, className, onUpdateType, stashId }: Props): Rea
             controllerId={controllerId}
             nominees={nominees}
             onClose={toggleNominate}
+            allContracts={allContracts}
+            stashId={stashId}
+          />
+        )}
+        {isVoteOpen && controllerId && (
+          <Vote
+            controllerId={controllerId}
+            nominees={nominees}
+            onClose={toggleVote}
             allContracts={allContracts}
             stashId={stashId}
           />
