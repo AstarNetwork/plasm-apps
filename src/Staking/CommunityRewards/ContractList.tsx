@@ -10,6 +10,7 @@ import { useToggle, useApi, useCall } from "@polkadot/react-hooks";
 import { FormatBalance } from "@polkadot/react-query";
 
 import Nominate from "../Actions/Account/Nominate";
+import Vote from "../Actions/Account/Vote";
 
 interface Props {
   authorsMap: Record<string, string>;
@@ -23,7 +24,8 @@ interface Props {
 
 interface ContractProps {
   address: AccountId | string;
-  onClick: any;
+  onClickNominate: any;
+  onClickVote: any;
   updateTotal: any;
 }
 
@@ -40,7 +42,7 @@ function sortedContracts(allContracts: string[], totals: Map<string, BN>): strin
   });
 }
 
-function Contract({ address, onClick, updateTotal }: ContractProps): React.ReactElement {
+function Contract({ address, onClickNominate, onClickVote, updateTotal }: ContractProps): React.ReactElement {
   const { api } = useApi();
   const historyDepth = useCall<u32>(api.query.plasmRewards.historyDepth, [])?.toNumber() ?? 1;
   const currentEra = useCall<Option<EraIndex>>(api.query.plasmRewards.currentEra, [])?.unwrap()?.toNumber() ?? 0;
@@ -63,6 +65,17 @@ function Contract({ address, onClick, updateTotal }: ContractProps): React.React
       });
     })();
   }, [era]);
+
+  const [bad, setBad] = useState<number>(0);
+  const [good, setGood] = useState<number>(0);
+  useEffect((): void => {
+    (async (): Promise<any> => {
+      await api.query.dappsStaking.erasVotes<any>(currentEra, address).then((votes: any) => {
+        setBad(votes?.bad.toNumber() ?? 0);
+        setGood(votes?.good.toNumber() ?? 0);
+      });
+    })();
+  }, [currentEra]);
 
   const stakingInfo = useCall<DerivedDappsStakingQuery>((api.derive as any).plasmStaking.query, [currentEra, address]);
   const [{ contractId, operatorId }, setStakingState] = useState<StakingState>({
@@ -93,7 +106,20 @@ function Contract({ address, onClick, updateTotal }: ContractProps): React.React
         <FormatBalance value={total as any} />
       </td>
       <td>
-        <Button isPrimary key="nominate" onClick={onClick(contractId)} label={"Nominate"} icon="hand paper outline" />
+        <Button
+          isPrimary
+          key="nominate"
+          onClick={onClickNominate(contractId)}
+          label={"Nominate"}
+          icon="hand paper outline"
+        />
+      </td>
+      <td>
+        <label>{"votes"}</label>
+        <i className="far fa-thumbs-up"></i> {good} / <i className="far fa-thumbs-down"></i> {bad}
+      </td>
+      <td>
+        <Button isPrimary key="vote" onClick={onClickVote(contractId)} label={"Vote"} icon="thumbs up" />
       </td>
     </tr>
   );
@@ -104,6 +130,7 @@ function ContractList({ isIntentions, isVisible, allContracts }: Props): React.R
   const [selectedContract, setSelectedContract] = useState<string>();
   const [totals, setTotals] = useState<Map<string, BN>>(new Map());
   const [isNominateOpen, toggleNominate] = useToggle();
+  const [isVoteOpen, toggleVote] = useToggle();
 
   useEffect((): void => {
     if (isVisible && allContracts && totals) {
@@ -127,9 +154,15 @@ function ContractList({ isIntentions, isVisible, allContracts }: Props): React.R
           <Contract
             key={contract}
             address={contract}
-            onClick={(contract: string): (() => void) => {
+            onClickNominate={(contract: string): (() => void) => {
               return (): void => {
                 toggleNominate();
+                setSelectedContract(contract);
+              };
+            }}
+            onClickVote={(contract: string): (() => void) => {
+              return (): void => {
+                toggleVote();
                 setSelectedContract(contract);
               };
             }}
@@ -145,6 +178,7 @@ function ContractList({ isIntentions, isVisible, allContracts }: Props): React.R
         <Table.Body>{_renderRows(contracts)}</Table.Body>
       </Table>
       {isNominateOpen && <Nominate onClose={toggleNominate} allContracts={allContracts} contract={selectedContract} />}
+      {isVoteOpen && <Vote onClose={toggleVote} allContracts={allContracts} contract={selectedContract} />}
     </div>
   );
 }

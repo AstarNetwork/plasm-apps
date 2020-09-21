@@ -116,6 +116,11 @@ export default function Api({ children, url }: Props): React.ReactElement<Props>
   const [isInitialized, setIsInitialized] = useState(false);
 
   const types = Object.values(plasmDefinitions).reduce((res, { types }): object => ({ ...res, ...types }), {});
+  // TODO: includes to plasm-types
+  types["VoteCounts"] = { bad: "u32", good: "u32" };
+  types["Vote"] = {
+    _enum: ["Bad", "Good"],
+  };
 
   // initial initialization
   useEffect((): void => {
