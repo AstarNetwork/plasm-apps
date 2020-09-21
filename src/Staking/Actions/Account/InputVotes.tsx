@@ -51,39 +51,41 @@ function InputVotes({ available, className, help, label, onChange, contract }: P
         {contracts.map(
           (key): React.ReactNode => (
             <div key={key}>
-              <Grid columns="equal">
+              <Grid columns="equal" style={{ marginTop: "1rem" }}>
                 <Grid.Column>
                   <AddressSmall value={key} />
                 </Grid.Column>
                 <Grid.Column>
                   <Form>
-                    <Form.Field>
-                      <Checkbox
-                        radio
-                        label="Good"
-                        value={1}
-                        checked={values.get(key) === 1}
-                        onChange={onChangeCheckBox(key)}
-                      />
-                    </Form.Field>
-                    <Form.Field>
-                      <Checkbox
-                        radio
-                        label="Bad"
-                        value={0}
-                        checked={values.get(key) === 0}
-                        onChange={onChangeCheckBox(key)}
-                      />
-                    </Form.Field>
-                    <Form.Field>
-                      <Checkbox
-                        radio
-                        label="Not Vote"
-                        value={-1}
-                        checked={values.get(key) !== 0 && values.get(key) !== 1}
-                        onChange={onChangeCheckBox(key)}
-                      />
-                    </Form.Field>
+                    <Form.Group inline>
+                      <Form.Field>
+                        <Checkbox
+                          radio
+                          label="Good"
+                          value={1}
+                          checked={values.get(key) === 1}
+                          onChange={onChangeCheckBox(key)}
+                        />
+                      </Form.Field>
+                      <Form.Field>
+                        <Checkbox
+                          radio
+                          label="Bad"
+                          value={0}
+                          checked={values.get(key) === 0}
+                          onChange={onChangeCheckBox(key)}
+                        />
+                      </Form.Field>
+                      <Form.Field>
+                        <Checkbox
+                          radio
+                          label="Not Vote"
+                          value={-1}
+                          checked={values.get(key) !== 0 && values.get(key) !== 1}
+                          onChange={onChangeCheckBox(key)}
+                        />
+                      </Form.Field>
+                    </Form.Group>
                   </Form>
                 </Grid.Column>
               </Grid>
