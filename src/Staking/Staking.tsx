@@ -17,6 +17,7 @@ import useSessionRewards from "./useSessionRewards";
 import ClaimForNominator from "./ClaimForNominator";
 import ClaimForOperator from "./ClaimForOperator";
 import CommunityRewards from "./CommunityRewards/CommunityRewards";
+import Voting from "./Voting";
 
 function Staking({ basePath, className }: Props): React.ReactElement<Props> {
   const { api } = useApi();
@@ -71,6 +72,10 @@ function Staking({ basePath, className }: Props): React.ReactElement<Props> {
               text: "Bond / Nominate",
             },
             {
+              name: "voting",
+              text: "Vote",
+            },
+            {
               name: "community-rewards",
               text: "Community Rewards",
             },
@@ -104,6 +109,7 @@ function Staking({ basePath, className }: Props): React.ReactElement<Props> {
         allContracts={allContractIds}
         electedContracts={stakedContracts ?? []}
       />
+      <Voting allContracts={allContractIds} isVisible={pathname === `${basePath}/voting`} />
       <ClaimForNominator isVisible={pathname === `${basePath}/claim-for-nominator`} />
       <ClaimForOperator isVisible={pathname === `${basePath}/claim-for-operator`} />
     </main>
